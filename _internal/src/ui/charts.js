@@ -1,5 +1,5 @@
-import Plotly from 'plotly.js-dist-min';
-import { getTranslation } from '../i18n/index.js';
+// Plotly is expected to be loaded as a global script in index.html for Pico W compatibility
+const Plotly = window.Plotly;
 
 export function getPlotTheme(isLight, isPres) {
     const textColor = isPres ? (isLight ? '#000000' : '#ffffff') : (isLight ? '#1f2937' : '#ea7603');
@@ -10,7 +10,7 @@ export function getPlotTheme(isLight, isPres) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: isLight ? 'rgba(255,255,255,0)' : 'rgba(0,0,0,0.1)',
         font: {
-            color: textColor, size: isPres ? 12 : 10, family: 'JetBrains Mono',
+            color: textColor, size: isPres ? 12 : 10, family: 'JetBrains Mono, monospace',
             weight: (isLight || isPres) ? 'bold' : 'normal'
         },
         margin: { t: 10, r: 15, l: 45, b: 30 },
@@ -29,6 +29,10 @@ export function getPlotColors(isLight, isPres) {
 }
 
 export function renderPlot(id, plotData, layout, config) {
+    if (!Plotly) {
+        console.error("Plotly library not loaded!");
+        return;
+    }
     Plotly.react(id, plotData, Object.assign({ autosize: true }, layout), Object.assign({ responsive: true }, config));
 }
 

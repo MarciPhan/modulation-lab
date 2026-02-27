@@ -7,14 +7,6 @@ export default defineConfig({
     build: {
         outDir: '../dist',
         emptyOutDir: true,
-        rollupOptions: {
-            external: ['plotly.js-dist-min'],
-            output: {
-                globals: {
-                    'plotly.js-dist-min': 'Plotly'
-                }
-            }
-        }
     },
     server: {
         port: 5173,
