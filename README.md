@@ -4,76 +4,76 @@
 [![Version](https://img.shields.io/badge/version-3.0.0-orange.svg)]()
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 
-Interaktivní virtuální laboratoř pro simulaci a analýzu digitálních rádiových modulací. Tato platforma slouží k demonstraci a experimentálnímu ověření principů digitálního zpracování signálu (DSP) v rámci akademické výuky komunikačních systémů.
+Interactive virtual laboratory for simulating and analyzing digital radio modulations. This platform serves as a demonstration and experimental tool for understanding the principles of Digital Signal Processing (DSP) within academic communication systems courses.
 
 ---
 
-## Obsah
-- [Instalace a spuštění](#instalace-a-spuštění)
-- [Architektura projektu](#architektura-projektu)
-- [Rozšiřitelnost](#rozšiřitelnost)
-  - [Přidání nové modulace](#přidání-nové-modulace)
-  - [Internacionalizace (i18n)](#internacionalizace-i18n)
-- [Technická specifikace](#technická-specifikace)
-- [Prezentační režim](#prezentační-režim)
-- [Související projekty](#související-projekty)
-- [Licence](#licence)
+## Table of Contents
+- [Installation and Run](#installation-and-run)
+- [Project Architecture](#project-architecture)
+- [Extensibility](#extensibility)
+  - [Adding New Modulations](#adding-new-modulations)
+  - [Internationalization (i18n)](#internationalization-i18n)
+- [Technical Specifications](#technical-specifications)
+- [Presentation Mode](#presentation-mode)
+- [Connected Projects](#connected-projects)
+- [License](#license)
 
 ---
 
-## Související projekty
+## Connected Projects
 
-Tento projekt existuje ve dvou variantách:
-1. **[Web/Desktop Lab Edition](https://github.com/jakubmarcinka/modulation-lab)** (tento repozitář) – Plná, vysoce modulární verze pro výuku a vývoj.
-2. **[Pico W Server Edition](https://github.com/jakubmarcinka/modulation-pico-server)** – Odlehčená, optimalizovaná verze pro běh přímo na mikrokontroléru Raspberry Pi Pico W.
+This project is available in two variants:
+1. **[Web/Desktop Lab Edition](https://github.com/MarciPhan/modulation-lab)** (this repository) – Full, highly modular version for teaching and development.
+2. **[Pico W Server Edition](https://github.com/MarciPhan/modulation-lab-pico_server)** – Lightweight, optimized version specifically designed to run directly on the Raspberry Pi Pico W microcontroller via Wi-Fi.
 
 ---
 
-## Instalace a spuštění
+## Installation and Run
 
-Aplikace je postavena na frameworku Vite a nevyžaduje složitou konfiguraci prostředí.
+The application is built on the Vite framework and requires minimal environment configuration.
 
-### Požadavky
-- [Node.js](https://nodejs.org/) (doporučena verze LTS)
-- Webový prohlížeč s podporou ES6 modulů
+### Prerequisites
+- [Node.js](https://nodejs.org/) (LTS version recommended)
+- A web browser with ES6 module support
 
-### Postup spuštění
-V kořenovém adresáři projektu využijte připravené skripty:
+### Startup Procedure
+Navigate to the project's root directory and run the included scripts:
 - **Unix (Linux/macOS)**: `./start.sh`
 - **Windows**: `start.bat`
 
-Aplikace bude následně dostupná na adrese `http://localhost:5173`.
+The application will then be accessible at `http://localhost:5173`.
 
 ---
 
-## Architektura projektu
+## Project Architecture
 
-Projekt využívá striktní oddělení uživatelského rozhraní, lokalizačních dat a výpočetního jádra. Veškeré technologické soubory jsou organizovány v adresáři `_internal`, aby kořen projektu zůstal přehledný pro koncové uživatele.
+The project employs strict separation of the user interface, localization data, and the computational core. All core technological assets are organized within the `_internal` directory to maintain a clean root structure for the end user.
 
-### Adresářová struktura
+### Directory Structure
 ```text
 lab/
-├── start.sh / .bat           # Spouštěcí skripty
-├── README.md                 # Dokumentace
-├── .gitignore                # Konfigurace verzovacího systému
-└── _internal/                # Zdrojové kódy a konfigurace
-    ├── vite.config.js        # Konfigurace sestavení
-    └── src/                  # Implementace
-        ├── main.js           # Hlavní orchestrátor
-        ├── engine.js         # DSP jádro (výpočty)
-        ├── ui/               # Komponenty uživatelského rozhraní
-        ├── modulations/      # Implementace modulačních schémat
-        └── i18n/             # Lokalizační slovníky
+├── start.sh / .bat           # Launch scripts
+├── README.md                 # Documentation
+├── .gitignore                # Version control configuration
+└── _internal/                # Source code and configuration
+    ├── vite.config.js        # Build configuration
+    └── src/                  # Implementation
+        ├── main.js           # Main application orchestrator
+        ├── engine.js         # DSP Core (computational logic)
+        ├── ui/               # User interface components
+        ├── modulations/      # Modulation scheme implementations
+        └── i18n/             # Localization dictionaries
 ```
 
 ---
 
-## Rozšiřitelnost
+## Extensibility
 
-### Přidání nové modulace
-Architektura umožňuje snadné přidávání nových modulačních formátů pomocí pluginů.
+### Adding New Modulations
+The architecture allows for the seamless addition of new modulation schemes via a plugin-like system.
 
-1. Vytvořte nový modul v `_internal/src/modulations/bpsk.js`:
+1. Create a new module inside `_internal/src/modulations/bpsk.js`:
 ```javascript
 import { utils } from './utils.js';
 
@@ -95,16 +95,16 @@ export default {
 };
 ```
 
-2. Zaregistrujte modul v `_internal/src/modulations/index.js`:
+2. Register the module in `_internal/src/modulations/index.js`:
 ```javascript
 import bpsk from './bpsk.js';
 export const MODULATIONS = [..., bpsk];
 ```
 
-### Internacionalizace (i18n)
-Systém podporuje dynamické přepínání jazyků bez nutnosti restartu aplikace.
+### Internationalization (i18n)
+The system supports dynamic language switching without requiring an application restart.
 
-1. Vytvořte slovník v `_internal/src/i18n/de.js`:
+1. Create a new dictionary in `_internal/src/i18n/de.js`:
 ```javascript
 export default {
     header_title: "Modulationslabor",
@@ -114,7 +114,7 @@ export default {
 };
 ```
 
-2. Přidejte slovník do orchestrátoru v `_internal/src/i18n/index.js`:
+2. Add the dictionary to the orchestrator in `_internal/src/i18n/index.js`:
 ```javascript
 import de from './de.js';
 export const translations = { cs, en, de };
@@ -122,21 +122,21 @@ export const translations = { cs, en, de };
 
 ---
 
-## Technická specifikace
+## Technical Specifications
 
-Simulační jádro v reálném čase provádí transformace signálu v časové i frekvenční oblasti. Parametry nastavené v UI přímo ovlivňují vnitřní stav třídy `ModulationEngine`:
+The simulation core performs real-time signal transformations in both the time and frequency domains. Parameters adjusted in the UI directly manipulate the internal state of the `ModulationEngine` class:
 
-- **Symbolová rychlost**: `Rs = Rb / log2(M)`
-- **Vzorkovací frekvence**: `Fs = Rs * sps`
-- **Filtrace**: Použití Root Raised Cosine (RRC) filtru pro minimalizaci ISI.
+- **Symbol Rate**: `Rs = Rb / log2(M)`
+- **Sampling Frequency**: `Fs = Rs * sps`
+- **Filtering**: Application of a Root Raised Cosine (RRC) filter to minimize Intersymbol Interference (ISI).
 
 ---
 
-## Prezentační režim
+## Presentation Mode
 
-Pro potřeby výuky v posluchárnách je implementován **Presentation Mode**, který aktivuje vysocce kontrastní barevné schéma a zvětšuje vykreslované prvky pro lepší čitelnost na projekci.
+To accommodate lectures in auditoriums, a **Presentation Mode** is implemented. When activated, it applies a high-contrast color scheme and scales up rendered elements for enhanced legibility on projectors.
 
-Příklad konfigurace barev v CSS (viz `_internal/src/ui/styles/main.css`):
+Example CSS color configuration (see `_internal/src/ui/styles/main.css`):
 ```css
 body.presentation {
     --bg-main: #000000;
@@ -147,12 +147,15 @@ body.presentation {
 
 ---
 
-## Přispívání a vývoj
+## Contributing and Development
 
-Tento projekt je vyvíjen Jakubem Marcinkou v rámci Fakulty mechatroniky, informatiky a mezioborových studií (FM TUL). Případné připomínky nebo návrhy na vylepšení směřujte do sekce Issues nebo formou Pull Requestu.
+This project is developed by Jakub Marcinka for the Faculty of Mechatronics, Informatics and Interdisciplinary Studies (FM TUL). Feedback, suggestions, or improvements are welcome—please submit them exclusively via Issues or Pull Requests.
 
 ---
 
-## Licence
+## License
 
-Tento projekt je distribuován pod licencí **ISC**. Více informací naleznete v souboru `package.json`.
+This project is distributed under the **ISC** License. See the `package.json` file for more details.
+
+---
+© 2026 Jakub Marcinka | Digital Modulation Lab Project
