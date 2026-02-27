@@ -1,6 +1,7 @@
 {
-  "name": "lab",
-  "version": "1.0.0",
+  "name": "modulation-lab",
+  "version": "3.0.0",
+  "description": "Interactive virtual laboratory for digital radio modulations (FM TUL)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -8,10 +9,14 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "dsp",
+    "modulation",
+    "education",
+    "lab"
+  ],
+  "author": "Jakub Marcinka",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "mathjs": "^15.1.1",
     "plotly.js": "^3.4.0",
