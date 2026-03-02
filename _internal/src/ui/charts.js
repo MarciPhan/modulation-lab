@@ -1,4 +1,5 @@
 // Plotly is expected to be loaded as a global script in index.html for Pico W compatibility
+import { getTranslation } from '../i18n/index.js';
 const Plotly = window.Plotly;
 
 export function getPlotTheme(isLight, isPres) {
