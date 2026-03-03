@@ -1,13 +1,14 @@
 @echo off
 :: 🚀 Live Modulation Lab - Startup Script for Windows
 
-cd _internal
+:: No dependencies check needed for Raw JS.
+set PORT=8080
+echo Starting Digital Modulation Lab (Raw JS) on http://localhost:%PORT% ...
 
-echo Checking dependencies...
-if not exist node_modules (
-    echo node_modules not found. Installing...
-    npm install
+where python >nul 2>nul
+if %ERRORLEVEL% EQU 0 (
+    python -m http.server %PORT%
+) else (
+    echo ❌ Error: Python not found. Please open index.html in a web browser supporting ES modules.
+    pause
 )
-
-echo Starting Digital Modulation Lab...
-npm run dev
