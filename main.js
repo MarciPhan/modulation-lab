@@ -16,6 +16,10 @@ const engine = new ModulationEngine();
 // Inicializace dynamického seznamu modulací
 const initModulationList = () => {
     const selector = elements.mod;
+    if (!selector) {
+        console.error("Critical: Modulation selector not found in DOM!");
+        return;
+    }
     selector.innerHTML = '';
     const available = engine.getAvailableModulations();
     available.forEach(mod => {

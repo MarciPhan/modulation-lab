@@ -22,13 +22,26 @@ export const controls = {
 };
 
 export const elements = {};
-Object.keys(controls).forEach(key => elements[key] = document.getElementById(controls[key]));
+Object.keys(controls).forEach(key => {
+    const el = document.getElementById(controls[key]);
+    if (!el) {
+        console.warn(`Warning: Element with ID "${controls[key]}" not found for key "${key}"`);
+    }
+    elements[key] = el;
+});
 
-export const helpPanel = document.getElementById('help-panel');
-export const infoSlots = [1, 2, 3, 4, 5].map(i => document.getElementById(`info-${i}`));
-export const appContainer = document.getElementById('app');
-export const welcomeModal = document.getElementById('welcome-modal');
-export const closeModalBtn = document.getElementById('close-modal-btn');
-export const overlay = document.getElementById('focus-overlay');
-export const closeBtn = document.getElementById('focus-close');
-export const focusContainer = document.getElementById('focus-plot-container');
+const getSafe = (id) => {
+    const el = document.getElementById(id);
+    if (!el) console.warn(`Warning: Static element "${id}" not found!`);
+    return el;
+};
+
+export const helpPanel = getSafe('help-panel');
+export const infoSlots = [1, 2, 3, 4, 5].map(i => getSafe(`info-${i}`));
+export const appContainer = getSafe('app');
+export const welcomeModal = getSafe('welcome-modal');
+export const closeModalBtn = getSafe('close-modal-btn');
+export const overlay = getSafe('focus-overlay');
+export const closeBtn = getSafe('focus-close');
+export const focusContainer = getSafe('focus-plot-container');
+
