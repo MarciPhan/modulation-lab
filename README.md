@@ -67,8 +67,7 @@ modulation-lab/
 ├── main.js                   # High-performance orchestrátor (Zero-copy rendering)
 ├── core/                     # Zapouzdření enginu
 │   └── engine.js
-├── ui/                       # UI komponenty & Branding
-│   ├── science_logo.png      # Nové profesionální science logo
+├── ui/                       # UI komponenty & správa
 │   ├── themes/               # Modulární barevná schémata
 │   ├── styles/               # Globální CSS (struktura)
 │   └── charts.js             # Wrappery pro grafy Plotly

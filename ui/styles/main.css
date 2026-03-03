@@ -616,8 +616,8 @@ body.light-theme .modal-content {
 
 /* Presentation Mode Overrides */
 body.presentation .controls {
-    width: 220px;
-    min-width: 220px;
+    width: 320px;
+    min-width: 320px;
 }
 
 body.presentation .chart-panel {
@@ -625,24 +625,64 @@ body.presentation .chart-panel {
 }
 
 body.presentation .panel-title {
-    font-size: 0.9rem;
-    padding: 8px 15px;
+    font-size: 1.3rem;
+    padding: 12px 20px;
+    font-weight: 900;
+    opacity: 1;
+}
+
+body.presentation .panel-title span {
+    font-weight: 900;
 }
 
 body.presentation .chart-info {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
 body.presentation h1 {
-    font-size: 1.4rem;
+    font-size: 2rem;
+    font-weight: 900;
+    opacity: 1;
 }
 
 body.presentation label {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    font-weight: 900;
 }
 
 body.presentation .help-panel {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    font-weight: 900;
+    opacity: 1;
+}
+
+body.presentation .lab-header small {
+    font-size: 1rem;
+    font-weight: 900;
+    opacity: 1;
+}
+
+body.presentation select,
+body.presentation input[type="number"] {
+    font-weight: 900;
+    font-size: 1.5rem;
+    height: auto;
+    width: 120px;
+    padding: 5px 10px;
+}
+
+body.presentation select {
+    width: auto;
+}
+
+body.presentation input[type="range"] {
+    height: 8px;
+}
+
+body.presentation input[type="range"]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
 }
 
 #mobile-nav {

@@ -10,12 +10,12 @@ export function getPlotTheme(theme, isPres) {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: isPres ? 'rgba(0,0,0,0)' : plotBg,
         font: {
-            color: finalTextColor, size: isPres ? 12 : 10, family: 'JetBrains Mono, monospace',
+            color: finalTextColor, size: isPres ? 16 : 10, family: 'JetBrains Mono, monospace',
             weight: (theme.id === 'light' || isPres) ? 'bold' : 'normal'
         },
         margin: { t: 10, r: 15, l: 45, b: 30 },
-        xaxis: { gridcolor: gridColor, zerolinecolor: zeroLineColor, tickfont: { size: isPres ? 10 : 9 }, linecolor: finalTextColor, linewidth: isPres ? 2 : 1 },
-        yaxis: { gridcolor: gridColor, zerolinecolor: zeroLineColor, tickfont: { size: isPres ? 10 : 9 }, linecolor: finalTextColor, linewidth: isPres ? 2 : 1 }
+        xaxis: { gridcolor: gridColor, zerolinecolor: zeroLineColor, tickfont: { size: isPres ? 14 : 9 }, linecolor: finalTextColor, linewidth: isPres ? 3 : 1 },
+        yaxis: { gridcolor: gridColor, zerolinecolor: zeroLineColor, tickfont: { size: isPres ? 14 : 9 }, linecolor: finalTextColor, linewidth: isPres ? 3 : 1 }
     };
 }
 
