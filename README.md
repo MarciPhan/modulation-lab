@@ -116,7 +116,7 @@ export default {
 
 ## Nasazení na Pico W
 
-Tato verze je optimalizována pro **[Modulation Pico Server](https://github.com/MarciPhan/modulation-pico-server)**.
+Tato verze je optimalizována pro **[Modulation Pico Server](https://github.com/MarciPhan/modulation-pico-server](https://github.com/MarciPhan/modulation-lab-pico_server)**.
 
 Pro nasazení:
 1. Spusťte `./deploy.sh`. Tento skript zkopíruje všechny potřebné soubory do adresáře `../modulation-pico-server/www/`.
