@@ -58,6 +58,7 @@ export default {
     'chart_3_spread_sig': '3) Spread Signal',
     'chart_4_tech_vector': '4) Technical Analysis (Vector)',
     'chart_4_tech_freq': '4) Technical Analysis (Freq)',
+    'chart_4_detail_bit': '4) Bit Detail (Baseband)',
 
     'modm_qam_desc': "<strong>M-QAM (Quadrature Amplitude Modulation):</strong> State of the art technique alternating wave phase and amplitude simultaneously. Essential in high-throughput applications powering modern 5G cellulars, Gigabit Wi-Fi 6 (1024-QAM) down to Digital TV broadcasters. The Chart 2 constellation presents symbols dispersed across a 2D grid matrix. While higher orders transmit more bits iteratively, denser constellation groupings demand immense SNR fidelity raising error odds drastically.",
     'modm_psk_desc': "<strong>M-PSK (Phase Shift Keying):</strong> An approach encoding binary structure exclusively into carrier phase displacements keeping amplitude consistently flat. You can observe symbols aligned perfectly in a circle within the Chart 2 diagram. Immensely popular due to low requirements on amplifier linearity making it the de-facto standard for deep space Satellites, raw GPS signals or baseline reliable communication under bad mobile networks.",

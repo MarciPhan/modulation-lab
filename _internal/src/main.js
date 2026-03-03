@@ -123,7 +123,10 @@ function runSimulation(forceRegen = false) {
 
     // Plot 4 Analysis
     let p4Data = [];
-    if (modDef.isVector || data.isVector) {
+    if (data.extras && data.extras.detail_t && data.extras.detail_bb) {
+        // Detail bitu – přiblížený baseband (THSS, DSSS)
+        p4Data = [{ x: data.extras.detail_t, y: data.extras.detail_bb, line: { color: trace4, width: lineWidth } }];
+    } else if (modDef.isVector || data.isVector) {
         if (data.extras && data.extras.envelope) {
             p4Data = [{ x: data.t.slice(0, sliceView), y: data.extras.envelope.slice(0, sliceView), line: { color: trace4, width: lineWidth } }];
         } else {

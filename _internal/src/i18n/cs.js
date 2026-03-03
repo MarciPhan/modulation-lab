@@ -63,6 +63,7 @@ export default {
     'chart_3_spread_sig': "3) Rozprostřený signál",
     'chart_4_tech_vector': "4) Technická analýza (Vektor)",
     'chart_4_tech_freq': "4) Technická analýza (Frekvence)",
+    'chart_4_detail_bit': "4) Detail 1 bitu (Baseband)",
 
     // Sekce Modulu Popisů
     'modm_qam_desc': "<strong>M-QAM (Kvadraturní amplitudová modulace):</strong> Pokročilá modulační technika, která mění současně amplitudu i fázi nosné vlny. Používá se všude tam, kde potřebujeme přenést ohromné množství dat – od rychlých 5G sítí, přes moderní Wi-Fi (např. Wi-Fi 6 používá 1024-QAM) až po digitální televizi (DVB-T2). Konstelace v Grafu 2 ukazuje rozložení symbolů do dvourozměrné mřížky. Čím více bodů (vyšší řád M), tím více bitů přeneseme jedním symbolem, ale body jsou k sobě blíž a jsou proto náchylnější k chybovosti způsobené šumem v kanálu.",

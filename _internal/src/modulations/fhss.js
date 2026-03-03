@@ -13,34 +13,83 @@ export default {
     simulate: (engine, bits) => {
         const Nc_fh = bits.length;
         const M_fh = engine.M;
-        const df = (engine.BW / engine.M);
-        const sps_fh = 16;
-        const Fs_fh = engine.Rb * sps_fh;
-        const hop_len = Math.max(1, Math.floor(engine.Rb / engine.Rh));
+        const df = engine.BW / engine.M; // rozestup kanálů
+        const Hps = Math.max(1, Math.floor(engine.Rh / engine.Rb)); // hops per bit
+        const sps_hop = 16;
+        const Rh = Hps * engine.Rb;
+        const Fs_fh = sps_hop * Rh;
 
-        const pn = utils.lfsr(8, [8, 4, 3, 2], Math.ceil(Nc_fh / hop_len), true);
+        const N_hops = Nc_fh * Hps;
 
-        const Ntotal = Nc_fh * sps_fh;
+        // LFSR PN sekvence -> kumulativní mod pro kanálové indexy (jako reference)
+        const pn_raw = utils.lfsr(7, [7, 1], N_hops);
+        const chan_idx = new Array(N_hops);
+        let cumsum = 0;
+        for (let i = 0; i < N_hops; i++) {
+            cumsum += pn_raw[i];
+            chan_idx[i] = cumsum % M_fh;
+        }
+
+        const Ntotal = N_hops * sps_hop;
         const t = new Float32Array(Ntotal);
         const bbI = new Float32Array(Ntotal);
         const bbQ = new Float32Array(Ntotal);
         const pb = new Float32Array(Ntotal);
         const fInst = new Float32Array(Ntotal);
 
-        for (let i = 0; i < Nc_fh; i++) {
-            const hop_idx = Math.floor(i / hop_len);
-            const chan = pn[hop_idx] % M_fh;
-            const fi = (chan - (M_fh - 1) / 2) * df;
-            const data = 2 * bits[i] - 1;
-            for (let s = 0; s < sps_fh; s++) {
-                const idx = i * sps_fh + s;
+        // BPSK data na ±1, roztažené na hopy
+        const data_bpsk = bits.map(b => 2 * b - 1);
+
+        // Konstrukce signálu se spojitou fází
+        let phase = 0;
+        for (let h = 0; h < N_hops; h++) {
+            const bit_idx = Math.floor(h / Hps);
+            const d = data_bpsk[bit_idx];
+            const chan = chan_idx[h];
+            const fi = (chan - (M_fh - 1) / 2) * df; // frekvenční offset od fc
+
+            for (let s = 0; s < sps_hop; s++) {
+                const idx = h * sps_hop + s;
                 t[idx] = idx / Fs_fh;
-                bbI[idx] = data * Math.cos(2 * Math.PI * fi * idx / Fs_fh);
-                bbQ[idx] = data * Math.sin(2 * Math.PI * fi * idx / Fs_fh);
+                // Spojitá fáze: integrujeme okamžitou frekvenci
+                phase += 2 * Math.PI * fi / Fs_fh;
+                const cos_bb = Math.cos(phase);
+                const sin_bb = Math.sin(phase);
+                bbI[idx] = d * cos_bb;
+                bbQ[idx] = d * sin_bb;
                 fInst[idx] = engine.fc + fi;
-                pb[idx] = bbI[idx] * Math.cos(2 * Math.PI * engine.fc * t[idx]) - bbQ[idx] * Math.sin(2 * Math.PI * engine.fc * t[idx]);
+                pb[idx] = bbI[idx] * Math.cos(2 * Math.PI * engine.fc * t[idx])
+                    - bbQ[idx] * Math.sin(2 * Math.PI * engine.fc * t[idx]);
             }
         }
-        return { t, bbI, bbQ, pb, fInst, bits, symbols: bits.map(b => ({ val: b })), extras: { plot2_x: Array.from({ length: pn.slice(0, 60).length }, (_, i) => i), plot2_y: pn.slice(0, 60) }, plot2Type: 'markers+lines' };
+
+        // Odhad instantánní frekvence z derivace unwrapped fáze basebandu
+        // (jako v referenčním Pythonu)
+        const fInstEst = new Float32Array(Ntotal);
+        let prevAngle = Math.atan2(bbQ[0], bbI[0]);
+        fInstEst[0] = engine.fc;
+        for (let i = 1; i < Ntotal; i++) {
+            let angle = Math.atan2(bbQ[i], bbI[i]);
+            let dph = angle - prevAngle;
+            // Unwrap
+            while (dph > Math.PI) dph -= 2 * Math.PI;
+            while (dph < -Math.PI) dph += 2 * Math.PI;
+            fInstEst[i] = engine.fc + (dph * Fs_fh) / (2 * Math.PI);
+            prevAngle = angle;
+        }
+
+        // Data pro graf 2: hop kanály (prvních 60)
+        const nh = Math.min(60, N_hops);
+        const plot2_x = Array.from({ length: nh }, (_, i) => i);
+        const plot2_y = chan_idx.slice(0, nh);
+
+        return {
+            t, bbI, bbQ, pb,
+            fInst: fInstEst,
+            bits,
+            symbols: bits.map(b => ({ val: b })),
+            extras: { plot2_x, plot2_y },
+            plot2Type: 'markers+lines'
+        };
     }
 };
