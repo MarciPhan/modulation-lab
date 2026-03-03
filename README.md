@@ -25,18 +25,34 @@ Interactive virtual laboratory for simulating and analyzing digital radio modula
 
 ## Installation and Run
 
-The application is entirely portable and does not require Node.js or npm.
+Tato aplikace běží přímo v prohlížeči. Pro její správné fungování ale musíte kód nejprve stáhnout a spustit lokální server (díky využití moderních ES modulů to nelze jen prostým dvojklikem na soubor).
 
-### Prerequisites
-- A modern web browser with **ES6 module** support (Chrome, Firefox, Edge, etc.)
-- (Optional) Python for local hosting (to handle strict CORS/Module policies in some browsers)
+**Postupujte přesně podle těchto 3 kroků:**
 
-### Startup Procedure
-Navigate to the project's root directory and run the included scripts for a local preview:
-- **Unix (Linux/macOS)**: `./start.sh`
-- **Windows**: `start.bat`
+### 1. Stažení zdrojových kódů (Download)
+Otevřete terminál (na Windows např. Příkazový řádek `cmd` nebo `PowerShell`, na Mac/Linux aplikaci `Terminal`) a zadejte:
+```bash
+git clone https://github.com/MarciPhan/modulation-lab.git
+```
 
-The application will be accessible at `http://localhost:8080`. Alternatively, you can simply open `index.html` via a local web server (e.g., VS Code Live Server).
+### 2. Přesunutí do složky (Navigate)
+V tomtéž terminálu přejděte do složky, kterou jste právě stáhli:
+```bash
+cd modulation-lab
+```
+
+### 3. Spuštění lokálního serveru (Run)
+Aplikace obsahuje připravené automatické skripty. V terminálu spusťte:
+
+* **Na Windows:**
+  Napíšte `start.bat` a stiskněte Enter.
+
+* **Na Linuxu / macOS:**
+  Napište `./start.sh` a stiskněte Enter.
+
+_Poznámka: Windows verze je zcela automatická. Na Linuxu/macOS musíte mít nainstalovaný Python (`sudo apt install python3`)._
+
+Skript vám vypíše do konzole odkaz (typicky `http://localhost:8080`), který se buď sám otevře ve vašem prohlížeči, nebo si jej zkopírujte do prohlížeče ručně. Hotovo!
 
 ---
 
