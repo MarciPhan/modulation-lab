@@ -1,77 +1,12 @@
 /* Google Font removed for offline functionality on Pico W */
 
 :root {
-    /* Base Palette */
-    --primary: #ce7630;
-    /* FM TUL oranžová ze screenshotu */
-    --primary-hover: #b06225;
-    --primary-trans-10: rgba(206, 118, 48, 0.10);
-    --primary-trans-20: rgba(206, 118, 48, 0.20);
-    --primary-trans-30: rgba(206, 118, 48, 0.30);
-
-    --bg-main: #181a1b;
-    /* Klidné tmavě šedé, ne čistě černé */
-    --bg-panel: #202224;
-    --bg-input: #111111;
-    --bg-input-focus: #000000;
-
-    --border-main: #33373a;
-    --border-input: #444444;
-
-    --text-primary: #e8e6e3;
-    --text-secondary: #aaaaaa;
-    --text-inverse: #111111;
-    /* Pro případy, kde potřebujeme kontrast (např. hover na něčem světlém, aktuálně spíše nevyužito) */
-
-    /* Thematic Colors */
-    --accent: #e5904d;
-    --danger: #c23b22;
-    --info: #8ca4b5;
-    --info-bg: rgba(140, 164, 181, 0.1);
-
-    --plot-grid: rgba(234, 118, 3, 0.05);
-
-    --terminal-green: #00ff41;
-
     /* Effects (No Glow for strict conservative approach) */
     --shadow-main: none;
     --shadow-inset: inset 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-body.light-theme {
-    /* Base Palette - Light */
-    --primary: #ea7603;
-    /* Oficiální oranžová */
-    --primary-hover: #ff8b1a;
-    --primary-trans-10: rgba(234, 118, 3, 0.10);
-    --primary-trans-20: rgba(234, 118, 3, 0.20);
-    --primary-trans-30: rgba(234, 118, 3, 0.30);
-
-    --bg-main: #f0f2f5;
-    --bg-panel: #ffffff;
-    --bg-input: #ffffff;
-    --bg-input-focus: #fdfdfd;
-
-    --border-main: #d1d5db;
-    --border-input: #9ca3af;
-
-    --text-primary: #1f2937;
-    --text-secondary: #4b5563;
-    --text-inverse: #ffffff;
-
-    /* Thematic Colors - Light */
-    --accent: #ea7603;
-    --danger: #dc2626;
-    --info: #3b82f6;
-    --info-bg: #eff6ff;
-
-    --plot-grid: rgba(0, 0, 0, 0.08);
-
-    /* Effects */
-    --shadow-main: 0 1px 3px rgba(0, 0, 0, 0.05);
-    --shadow-inset: none;
-}
-
+/* body.light-theme is now handled by ThemeManager (sets --variables on :root) */
 body.light-theme .scanline {
     display: none;
 }

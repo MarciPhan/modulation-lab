@@ -2,6 +2,7 @@ import { ModulationEngine } from './core/engine.js';
 import { elements, helpPanel, infoSlots, welcomeModal, closeModalBtn, overlay, focusContainer, closeBtn } from './ui/dom.js';
 import { getTranslation, updateInterface } from './i18n/index.js';
 import { UI_PARAMS } from './modulations/index.js';
+import { themeManager } from './ui/themeManager.js';
 import { getPlotTheme, getPlotColors, renderPlot, updateInfoSlots } from './ui/charts.js';
 import { setupFullscreen, initTooltips } from './ui/utils.js';
 import { setupSyncInputs, setupMainEvents } from './ui/events.js';
@@ -96,6 +97,12 @@ function runSimulation(forceRegen = false) {
     const data = engine.simulate(type, forceRegen);
     if (!data) return;
 
+    const themeObj = themeManager.getCurrentTheme();
+    const isLight = themeObj.id === 'light';
+    const isPres = document.body.classList.contains('presentation');
+    const theme = getPlotTheme(themeObj, isPres);
+    const { trace1, trace2, trace3, trace4 } = getPlotColors(themeObj, isPres);
+
     const sliceView = 3000;
     const lineWidth = isPres ? 3 : 2;
 
@@ -175,11 +182,8 @@ closeModalBtn.addEventListener('click', () => {
 });
 
 // Event pro změnu jazyka (překreslení GUI)
-window.addEventListener('languageChanged', () => {
-    const activeModId = elements.mod ? elements.mod.value : 'qam';
-    const modDef = engine.getModulationDef(activeModId);
-    if (modDef) updateGUIByModule(modDef);
-});
+window.addEventListener('languageChanged', requestUpdate);
+window.addEventListener('themeChanged', requestUpdate);
 
 if (closeBtn) closeBtn.addEventListener('click', exitFocus);
 

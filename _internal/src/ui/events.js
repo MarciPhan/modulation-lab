@@ -41,7 +41,7 @@ export function setupMainEvents(elements, engine, requestUpdate, updateInterface
     });
 
     elements.themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light-theme');
+        themeManager.nextTheme();
         requestUpdate();
     });
 
