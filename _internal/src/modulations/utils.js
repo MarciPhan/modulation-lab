@@ -1,12 +1,12 @@
 export const utils = {
-    lfsr: (n, taps, length) => {
+    lfsr: (n, taps, length, returnState = false) => {
         let state = 0x1;
         const seq = [];
         const mask = (1 << n) - 1;
         for (let i = 0; i < length; i++) {
             let bit = 0;
             taps.forEach(t => { bit ^= (state >> (t - 1)) & 1; });
-            seq.push(state & 1);
+            seq.push(returnState ? state : (state & 1));
             state = ((state << 1) | bit) & mask;
             if (state === 0) state = 1;
         }

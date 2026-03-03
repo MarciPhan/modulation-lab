@@ -18,7 +18,7 @@ export default {
         const Fs_fh = engine.Rb * sps_fh;
         const hop_len = Math.max(1, Math.floor(engine.Rb / engine.Rh));
 
-        const pn = utils.lfsr(8, [8, 4, 3, 2], Math.ceil(Nc_fh / hop_len));
+        const pn = utils.lfsr(8, [8, 4, 3, 2], Math.ceil(Nc_fh / hop_len), true);
 
         const Ntotal = Nc_fh * sps_fh;
         const t = new Float32Array(Ntotal);

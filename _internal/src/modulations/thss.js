@@ -12,7 +12,7 @@ export default {
     showConstellation: false,
     simulate: (engine, bits) => {
         const Nc_th = bits.length;
-        const codes = utils.lfsr(7, [7, 3], Nc_th);
+        const codes = utils.lfsr(7, [7, 3], Nc_th, true);
         const sps_th = 200;
         const Ts_th = 0.001;
         const Fs_th = sps_th / Ts_th;
