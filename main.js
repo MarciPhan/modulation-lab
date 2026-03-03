@@ -34,6 +34,22 @@ const initModulationList = () => {
 let renderPending = false;
 let needsForcedRegen = false;
 
+function getPythonTitles(type, engine) {
+    const M = engine.M;
+    const fc = engine.fc / 1000;
+    switch (type) {
+        case 'qam': return ['Bity (prvních 120)', `Konstelace ${M}-QAM (Gray), normalizace Es=1`, 'Základní pásmo (RRC tvarování) – I/Q, ~10 symbolů', 'Obálka základního pásma |s_BB(t)| – ~10 symbolů', `Pásmový ${M}-QAM na nosné f_c = ${fc.toFixed(1)} kHz – časový průběh`];
+        case 'psk': return ['Bity (prvních 120)', `Konstelace M=${M}-PSK (Gray), globální posun fáze π/M`, 'Základní pásmo (RRC tvarování) – I/Q, ~10 symbolů', 'Fáze signálu', `Pásmový M-PSK s posunem fáze π/M, f_c = ${fc.toFixed(1)} kHz – časový průběh`];
+        case 'ask': return ['Bity (prvních 100)', `Symboly M=${M} (Gray) – normalizované amplitudy`, 'Základní pásmo (RRC tvarování) – časový průběh ~10 symbolů', 'Fáze signálu', `Pásmový M-ASK na nosné f_c = ${fc.toFixed(1)} kHz – časový průběh`];
+        case 'fsk': return ['Bity (prvních 120)', `Symboly (Gray) – prvních 40`, 'Základní pásmo – I/Q, ~10 symbolů', 'Okamžitá frekvence (kHz)', `Pásmový M-FSK (cpfsk), f_c = ${fc.toFixed(1)} kHz – časový průběh`];
+        case 'css': return ['Bity (prvních 120)', 'Indexy symbolů m (Chirp)', 'Základní pásmo (CSS) – I/Q', 'Instantánní frekvence chirpu (kHz)', `Pásmový LoRa CSS na nosné f_c = ${fc.toFixed(1)} kHz – časový průběh`];
+        case 'dsss': return ['Bity (prvních 120)', 'PN čipová sekvence (±1)', 'Rozprostřené čipy (data × PN)', 'Základní pásmo DSSS – I(t)', `Pásmový DSSS na nosné f_c = ${fc.toFixed(1)} kHz – časový průběh`];
+        case 'fhss': return ['Bity (prvních 120)', 'Index kanálu (FHSS hop)', 'Základní pásmo – I/Q', 'Instantánní frekvence z basebandu (kHz)', `Pásmový FHSS na nosné f_c = ${fc.toFixed(1)} kHz – časový průběh (~6 hopů)`];
+        case 'thss': return ['Bity (prvních 40)', `Time-hopping kód – prvních rámců (N_th=${engine.SLOTS} slotů)`, 'Základní pásmo THSS – několik rámců (~4 bity)', 'Detail 1 bitu – pulzy s TH (μs)', `Pásmový THSS na nosné f_c = ${(engine.fc / 1000000).toFixed(2)} MHz – několik rámců`];
+    }
+    return ['1) Zdrojová data', '2) Mapování / Kód', '3) Základní pásmo', '4) Technická analýza', '5) Výstup RF kanálu'];
+}
+
 function requestUpdate(forceRegen = false) {
     if (forceRegen) needsForcedRegen = true;
     if (renderPending) return;
@@ -56,14 +72,22 @@ function updateGUIByModule(modDef) {
 
     if (helpPanel) helpPanel.innerHTML = getTranslation(modDef.help);
 
+    const titles = getPythonTitles(modDef.id, engine);
+
+    const t1 = document.getElementById('title-1-text');
+    if (t1) t1.textContent = titles[0];
+
     const t2 = document.getElementById('title-2-text');
-    if (t2) t2.textContent = getTranslation(modDef.info2 || 'chart_2_sym_mapping');
+    if (t2) t2.textContent = titles[1];
 
     const t3 = document.getElementById('title-3-text');
-    if (t3) t3.textContent = getTranslation(modDef.info3 || 'chart_3_baseband');
+    if (t3) t3.textContent = titles[2];
 
     const t4 = document.getElementById('title-4-text');
-    if (t4) t4.textContent = getTranslation(modDef.info4 || 'chart_4_tech_vector');
+    if (t4) t4.textContent = titles[3];
+
+    const t5 = document.getElementById('title-5-text');
+    if (t5) t5.textContent = titles[4];
 
     const constBtn = document.querySelector('.focus-btn[data-plot="plot-const"]');
     if (constBtn) constBtn.style.display = modDef.showConstellation ? 'inline-block' : 'none';
