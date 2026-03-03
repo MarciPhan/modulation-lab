@@ -4,9 +4,9 @@ export default {
     params: ['FC', 'RB', 'SF', 'BW'],
     requiredBits: (engine) => 4 * engine.SF,
     help: 'modm_css_desc',
-    info2: 'chart_2_sym_mapping',
-    info3: 'chart_3_baseband',
-    info4: 'chart_4_tech_freq',
+    info2: 'chart_2_css',
+    info3: 'chart_3_css',
+    info4: 'chart_4_css',
     showConstellation: false,
     simulate: (engine, bits) => {
         const SF_eff = engine.SF;

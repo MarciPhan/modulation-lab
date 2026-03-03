@@ -22,3 +22,8 @@ yarn-error.log*
 # OS specific
 *.swp
 *~
+
+# Verification (local only)
+_internal/verify_py.py
+_internal/verify_js.mjs
+_internal/verify_data/

@@ -51,14 +51,39 @@ export default {
     'chart_5_title': '5) RF Channel Output',
     'chart_5_tt': 'The final amplified analog frequency bouncing off your physical antenna at the speed of light. Modulated Carrier ready to penetrate distances illustrating textbook AM/FM/PM outcomes.',
 
-    'chart_2_sym_mapping': '2) Symbol Mapping',
-    'chart_2_spread_code': '2) Spreading Code',
-    'chart_2_hop_code': '2) Hopping Code',
-    'chart_3_baseband': '3) Baseband Domain',
-    'chart_3_spread_sig': '3) Spread Signal',
-    'chart_4_tech_vector': '4) Technical Analysis (Vector)',
-    'chart_4_tech_freq': '4) Technical Analysis (Freq)',
-    'chart_4_detail_bit': '4) Bit Detail (Baseband)',
+    // Per-module chart titles (matching Python reference scripts)
+    // QAM
+    'chart_2_qam': '2) Constellation M-QAM (Gray)',
+    'chart_3_qam': '3) Baseband (RRC shaping) – I/Q',
+    'chart_4_qam': '4) Baseband envelope |s_BB(t)|',
+    // PSK
+    'chart_2_psk': '2) Constellation M-PSK (Gray)',
+    'chart_3_psk': '3) Baseband (RRC shaping) – I/Q',
+    'chart_4_psk': '4) Signal phase',
+    // ASK
+    'chart_2_ask': '2) Symbols (Gray) – normalized amplitudes',
+    'chart_3_ask': '3) Baseband (RRC shaping)',
+    'chart_4_ask': '4) Signal phase',
+    // FSK
+    'chart_2_fsk': '2) Symbols (Gray)',
+    'chart_3_fsk': '3) Baseband – I/Q',
+    'chart_4_fsk': '4) Instantaneous frequency (kHz)',
+    // CSS
+    'chart_2_css': '2) Symbol indices m (Chirp)',
+    'chart_3_css': '3) Baseband (CSS) – I/Q',
+    'chart_4_css': '4) Chirp instantaneous frequency (kHz)',
+    // DSSS
+    'chart_2_dsss': '2) PN chip sequence (±1)',
+    'chart_3_dsss': '3) Spread chips (data × PN)',
+    'chart_4_dsss': '4) Baseband DSSS – I(t)',
+    // FHSS
+    'chart_2_fhss': '2) Channel index (FHSS hop)',
+    'chart_3_fhss': '3) Baseband – I/Q',
+    'chart_4_fhss': '4) Instantaneous frequency from baseband (kHz)',
+    // THSS
+    'chart_2_thss': '2) Time-hopping code (TH slots)',
+    'chart_3_thss': '3) Baseband THSS',
+    'chart_4_thss': '4) Bit detail – TH pulses',
 
     'modm_qam_desc': "<strong>M-QAM (Quadrature Amplitude Modulation):</strong> State of the art technique alternating wave phase and amplitude simultaneously. Essential in high-throughput applications powering modern 5G cellulars, Gigabit Wi-Fi 6 (1024-QAM) down to Digital TV broadcasters. The Chart 2 constellation presents symbols dispersed across a 2D grid matrix. While higher orders transmit more bits iteratively, denser constellation groupings demand immense SNR fidelity raising error odds drastically.",
     'modm_psk_desc': "<strong>M-PSK (Phase Shift Keying):</strong> An approach encoding binary structure exclusively into carrier phase displacements keeping amplitude consistently flat. You can observe symbols aligned perfectly in a circle within the Chart 2 diagram. Immensely popular due to low requirements on amplifier linearity making it the de-facto standard for deep space Satellites, raw GPS signals or baseline reliable communication under bad mobile networks.",
@@ -67,5 +92,16 @@ export default {
     'modm_css_desc': "<strong>CSS (LoRa Chirp Spread Spectrum):</strong> Semtech disruptive proprietary technique revolutionizing battery-operated \'Internet of Things\'. Foregoes standard static frequencies sending a continuous sweeping \'Chirp\' up or down the band. Modulated messages are staggered via tiny timing phase offsets of those chirps. Astounding receiver capability can dig out signatures deep under the noise floor propagating data tens of kilometers on miniature sensors.",
     'modm_dsss_desc': "<strong>DSSS (Direct Sequence Spread Spectrum):</strong> Roots tracing to secret military radar tech. One informational bit shatters into dozens of miniature short fragments spread by pseudo-random noise codes. The transmission spreads ultra-wide looking virtually identical to ambient background noise from space rendering enemies clueless. Only receivers applying inverse cipher reconstruct the message above jammers securely. Powers up GPS pinpoint localization and legacy 802.11b Wi-Fis.",
     'modm_fhss_desc': "<strong>FHSS (Frequency Hopping):</strong> Spread spectrum variation conceptualized by Hedy Lamarr defeating WWII torpedo jammers. The communicating endpoints hop across alternating carrier channel slots at insane sync speed following a cryptographic pseudo-string. In case foreign signals jam one channel, the disruption affects mere microsecond fractions before FHSS leaps away. Commonly utilized by Bluetooth shifting 1600 times a second.",
-    'modm_thss_desc': "<strong>THSS (Time Hopping Spread Spectrum):</strong> Broadly consists of radiating immensely strong but exceptionally brief sub-nanosecond energy bursts within rigorously computed time windows (slots); maintaining utter radio silence otherwise. Time Hopping allows astonishing quantities of nearby devices sharing identical frequencies simultaneously with collision probability reaching near mathematical zero boundaries. Correlated to UWB (Ultra-Wideband) foundations. <br><br><strong>Warning:</strong> The sampling rate for THSS is set to 200 kHz. If the carrier frequency fc is set too high (above 100 kHz), aliasing will occur, and graph 5 will appear as a flat line. For this module, we recommend keeping fc below 100 kHz."
+    'modm_thss_desc': "<strong>THSS (Time Hopping Spread Spectrum):</strong> Broadly consists of radiating immensely strong but exceptionally brief sub-nanosecond energy bursts within rigorously computed time windows (slots); maintaining utter radio silence otherwise. Time Hopping allows astonishing quantities of nearby devices sharing identical frequencies simultaneously with collision probability reaching near mathematical zero boundaries. Correlated to UWB (Ultra-Wideband) foundations. <br><br><strong>Warning:</strong> The sampling rate for THSS is set to 200 kHz. If the carrier frequency fc is set too high (above 100 kHz), aliasing will occur, and graph 5 will appear as a flat line. For this module, we recommend keeping fc below 100 kHz.",
+    // Modal Guide
+    'modal_welcome_title': "Welcome to Modulation Lab 3.0",
+    'modal_welcome_intro': "This application serves as an interactive tool for students to understand the principles of digital radio modulations.",
+    'modal_section_1_title': "Left Menu (Modulation Parameters)",
+    'modal_section_1_body': "At the top, you can select any <strong>modulation format</strong> (QAM, PSK, LoRa...). Below that, you will find all the physical parameters of the transmitter. <strong>Try hovering over the turquoise symbols <span class=\"info-icon\" style=\"position:static; margin:0 2px; vertical-align: middle;\">?</span> next to the names</strong> to instantly learn what happens when you change a parameter with the slider!",
+    'modal_section_2_title': "Right Section (Graphical Panels)",
+    'modal_section_2_body': "The application instantly simulates the signal step-by-step as it travels through the circuits to the antenna: from computer zeros and ones (Graph 1), through their mapping (Graph 2), processing by frequency filters into the baseband (Graph 3), to the resulting oscillating carrier radio wave traveling from the antenna at 299,792 km/s through space (Graph 5).",
+    'modal_section_2_footer': "For each of the graphs, you can click the <strong>⛶ icon for fullscreen</strong> view.",
+    'modal_section_3_title': "Presentation and Education",
+    'modal_section_3_body': "For classroom projection, <strong>PRESENTATION MODE</strong> is available on the left. The application dims background elements and adopts a high-contrast neon palette, which is perfect for display on projectors even from the back rows.",
+    'modal_close_btn': "Close and start experimenting"
 };

@@ -106,14 +106,24 @@ function runSimulation(forceRegen = false) {
         fill: 'tozeroy', fillcolor: isLight ? 'rgba(0, 90, 158, 0.15)' : 'rgba(139, 233, 253, 0.08)'
     }], { ...theme, yaxis: { range: [-0.2, 1.2], dtick: 1, gridcolor: theme.xaxis.gridcolor, zerolinecolor: theme.xaxis.zerolinecolor } }, { displayModeBar: false });
 
-    // Plot 2: Mapping
+    // Plot 2: Mapping / Constellation
     let p2Data = [];
-    if (data.plot2Type) {
-        p2Data = [{ x: data.extras.plot2_x, y: data.extras.plot2_y, mode: data.plot2Type, line: { width: lineWidth - 0.5, color: trace2 }, marker: { color: trace2, size: isPres ? 8 : 6 } }];
+    let p2Layout = { ...theme };
+    if (modDef.showConstellation) {
+        p2Layout = { ...theme, xaxis: { range: [-2, 2], dtick: 0.5, linewidth: 2, linecolor: theme.xaxis.linecolor }, yaxis: { range: [-2, 2], dtick: 0.5, linewidth: 2, linecolor: theme.yaxis.linecolor } };
+        p2Data = (data.symbols[0] && data.symbols[0].I !== undefined) ?
+            [{ x: data.symbols.map(s => s.I), y: data.symbols.map(s => s.Q), mode: 'markers', type: 'scatter', marker: { color: trace4, size: isPres ? 14 : 10, line: { color: isLight ? '#fff' : '#000', width: 1 } } }] :
+            [{ x: data.bbI.slice(0, 1000), y: data.bbQ.slice(0, 1000), mode: 'lines', line: { color: trace4, width: lineWidth } }];
+    } else if (data.plot2Type) {
+        const xArr = (data.extras && data.extras.plot2_x) ? data.extras.plot2_x : Array.from({ length: data.symbols.length }, (_, i) => i);
+        const yArr = (data.extras && data.extras.plot2_y) ? data.extras.plot2_y : data.symbols.map(s => s.val);
+        p2Data = [{ x: xArr, y: yArr, mode: data.plot2Type, line: { width: lineWidth - 0.5, color: trace2 }, marker: { color: trace2, size: isPres ? 8 : 6 } }];
     } else {
-        p2Data = [{ x: Array.from({ length: data.symbols.length }, (_, i) => i), y: data.symbols.map(s => s.val), mode: 'markers', marker: { color: trace2, size: isPres ? 8 : 6 }, error_y: { type: 'data', array: data.symbols.map(s => 0), arrayminus: data.symbols.map(s => s.val), color: trace2, width: lineWidth - 1 } }];
+        const xArr = Array.from({ length: data.symbols.length }, (_, i) => i);
+        const yArr = data.symbols.map(s => s.val);
+        p2Data = [{ x: xArr, y: yArr, mode: 'markers', marker: { color: trace2, size: isPres ? 8 : 6 }, error_y: { type: 'data', array: yArr.map(s => 0), arrayminus: yArr, color: trace2, width: lineWidth - 1 } }];
     }
-    renderPlot('plot-2', p2Data, { ...theme }, { displayModeBar: false });
+    renderPlot('plot-2', p2Data, p2Layout, { displayModeBar: false });
 
     // Plot 3: Baseband
     renderPlot('plot-3', [
@@ -138,13 +148,6 @@ function runSimulation(forceRegen = false) {
     }
     renderPlot('plot-4', p4Data, { ...theme }, { displayModeBar: false });
 
-    // Constellation
-    if (modDef.showConstellation) {
-        let constLayout = { ...theme, margin: { t: 10, r: 10, l: 35, b: 35 }, xaxis: { range: [-2, 2], dtick: 1, linewidth: 2, linecolor: theme.xaxis.linecolor }, yaxis: { range: [-2, 2], scaleanchor: 'x', dtick: 1, linewidth: 2, linecolor: theme.yaxis.linecolor } };
-        let constData = (data.symbols[0] && data.symbols[0].I !== undefined) ? [{ x: data.symbols.map(s => s.I), y: data.symbols.map(s => s.Q), mode: 'markers', type: 'scatter', marker: { color: trace3, size: isPres ? 6 : 4 } }] : [{ x: data.bbI.slice(0, 1000), y: data.bbQ.slice(0, 1000), mode: 'lines', line: { color: trace3, width: lineWidth - 0.5 } }];
-        renderPlot('plot-const', constData, constLayout, { displayModeBar: false });
-    }
-
     // Plot 5: RF
     renderPlot('plot-5', [{ x: data.t.slice(0, 5000), y: data.pb.slice(0, 5000), line: { color: trace1, width: lineWidth - 0.5 } }], { ...theme }, { displayModeBar: false });
 }
@@ -161,6 +164,11 @@ setupMainEvents(elements, engine, requestUpdate, updateInterface, enterFocus, ex
 if (!localStorage.getItem('modulationLabGuided')) {
     welcomeModal.classList.remove('hidden');
 }
+
+elements.helpBtn.addEventListener('click', () => {
+    welcomeModal.classList.remove('hidden');
+});
+
 closeModalBtn.addEventListener('click', () => {
     welcomeModal.classList.add('hidden');
     localStorage.setItem('modulationLabGuided', 'true');

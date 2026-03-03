@@ -6,9 +6,9 @@ export default {
     params: ['FC', 'RB', 'L'],
     requiredBits: (engine) => 10,
     help: 'modm_dsss_desc',
-    info2: 'chart_2_spread_code',
-    info3: 'chart_3_spread_sig',
-    info4: 'chart_4_detail_bit',
+    info2: 'chart_2_dsss',
+    info3: 'chart_3_dsss',
+    info4: 'chart_4_dsss',
     showConstellation: false,
     simulate: (engine, bits) => {
         const Nc_ds = bits.length;

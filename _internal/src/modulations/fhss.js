@@ -6,9 +6,9 @@ export default {
     params: ['M', 'FC', 'RB', 'BW', 'RH'],
     requiredBits: (engine) => 100,
     help: 'modm_fhss_desc',
-    info2: 'chart_2_hop_code',
-    info3: 'chart_3_baseband',
-    info4: 'chart_4_tech_freq',
+    info2: 'chart_2_fhss',
+    info3: 'chart_3_fhss',
+    info4: 'chart_4_fhss',
     showConstellation: false,
     simulate: (engine, bits) => {
         const Nc_fh = bits.length;

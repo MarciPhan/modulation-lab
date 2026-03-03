@@ -6,9 +6,9 @@ export default {
     params: ['FC', 'RB', 'SLOTS'],
     requiredBits: (engine) => 40,
     help: 'modm_thss_desc',
-    info2: 'chart_2_hop_code',
-    info3: 'chart_3_baseband',
-    info4: 'chart_4_detail_bit',
+    info2: 'chart_2_thss',
+    info3: 'chart_3_thss',
+    info4: 'chart_4_thss',
     showConstellation: false,
     simulate: (engine, bits) => {
         const Nc_th = bits.length;

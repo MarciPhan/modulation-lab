@@ -55,15 +55,39 @@ export default {
     'chart_4_tt': "Analytický pohled do vlastností 'vyrobeného' signálu. Zobrazuje buď okamžitou aktuální frekvenci přenášenou v grafu níže (užitečné u LoRa či FSK), modulovou obálku (součtovou velikost energie) nebo reálné I/Q body nakreslené vedle sebe do kruhové konstelace.",
     'chart_5_title': "5) Výstup RF kanálu",
     'chart_5_tt': "Toto vlna nakonec vyletí z vaší antény a poletí rychlostí světla prostorem! Finální namodulovaná 'našponovaná' nosná Carrier frekvence obsahující skryté informace v jejích deformacích. Zářná demonstrace FM/AM/PM principů.",
-
-    'chart_2_sym_mapping': "2) Mapování symbolů",
-    'chart_2_spread_code': "2) Rozprostřený kód",
-    'chart_2_hop_code': "2) Kód přeskakování",
-    'chart_3_baseband': "3) Základní pásmo (Baseband)",
-    'chart_3_spread_sig': "3) Rozprostřený signál",
-    'chart_4_tech_vector': "4) Technická analýza (Vektor)",
-    'chart_4_tech_freq': "4) Technická analýza (Frekvence)",
-    'chart_4_detail_bit': "4) Detail 1 bitu (Baseband)",
+    // Per-module názvy grafů (odpovídají referenčním Python skriptům)
+    // QAM
+    'chart_2_qam': "2) Konstelace M-QAM (Gray)",
+    'chart_3_qam': "3) Základní pásmo (RRC tvarování) – I/Q",
+    'chart_4_qam': "4) Obálka základního pásma |s_BB(t)|",
+    // PSK
+    'chart_2_psk': "2) Konstelace M-PSK (Gray)",
+    'chart_3_psk': "3) Základní pásmo (RRC tvarování) – I/Q",
+    'chart_4_psk': "4) Fáze signálu",
+    // ASK
+    'chart_2_ask': "2) Symboly (Gray) – normalizované amplitudy",
+    'chart_3_ask': "3) Základní pásmo (RRC tvarování)",
+    'chart_4_ask': "4) Fáze signálu",
+    // FSK
+    'chart_2_fsk': "2) Symboly (Gray)",
+    'chart_3_fsk': "3) Základní pásmo – I/Q",
+    'chart_4_fsk': "4) Okamžitá frekvence (kHz)",
+    // CSS
+    'chart_2_css': "2) Indexy symbolů m (Chirp)",
+    'chart_3_css': "3) Základní pásmo (CSS) – I/Q",
+    'chart_4_css': "4) Instantánní frekvence chirpu (kHz)",
+    // DSSS
+    'chart_2_dsss': "2) PN čipová sekvence (±1)",
+    'chart_3_dsss': "3) Rozprostřené čipy (data × PN)",
+    'chart_4_dsss': "4) Základní pásmo DSSS – I(t)",
+    // FHSS
+    'chart_2_fhss': "2) Index kanálu (FHSS hop)",
+    'chart_3_fhss': "3) Základní pásmo – I/Q",
+    'chart_4_fhss': "4) Instantánní frekvence z basebandu (kHz)",
+    // THSS
+    'chart_2_thss': "2) Time-hopping kód (TH sloty)",
+    'chart_3_thss': "3) Základní pásmo THSS",
+    'chart_4_thss': "4) Detail 1 bitu – pulzy s TH",
 
     // Sekce Modulu Popisů
     'modm_qam_desc': "<strong>M-QAM (Kvadraturní amplitudová modulace):</strong> Pokročilá modulační technika, která mění současně amplitudu i fázi nosné vlny. Používá se všude tam, kde potřebujeme přenést ohromné množství dat – od rychlých 5G sítí, přes moderní Wi-Fi (např. Wi-Fi 6 používá 1024-QAM) až po digitální televizi (DVB-T2). Konstelace v Grafu 2 ukazuje rozložení symbolů do dvourozměrné mřížky. Čím více bodů (vyšší řád M), tím více bitů přeneseme jedním symbolem, ale body jsou k sobě blíž a jsou proto náchylnější k chybovosti způsobené šumem v kanálu.",
@@ -73,5 +97,16 @@ export default {
     'modm_css_desc': "<strong>CSS (LoRa Chirp Spread Spectrum):</strong> Patentovaná revoluční technika firmy Semtech pro bateriově napájený 'Internet věcí' (IoT). Namísto jedné frekvence signál neustále plynule přelaďuje (píská odzdola nahoru) a tvoří takzvaný 'Chirp'. Do těchto hvizdů se zakóduje zpráva časovým odsazením začátku hvizdu. Modulace dokáže signál 'uhrabat' hluboko pod hranici šumu (na displeji by bylo zdánlivě ticho) a signál tak doletí od obyčejného senzoru i desítky kilometrů daleko s extrémně malou baterií.",
     'modm_dsss_desc': "<strong>DSSS (Přímé rozprostření spektra):</strong> Původně vojenská technologie. Jeden informační bit je rozsekán na dlouhou sekvenci krátkých 'čipů' pomocí pseudonáhodného šumového kódu. Tím se signál doslova rozprostře a rozmaže do obří šířky pásma, takže pro nepřítele vypadá jen jako nezajímavý šum z vesmíru. Na přijímači se stejným tajným kódem signál znovu složí a vynoří ho nad rušičky. Tuto metodu dodnes bezpečně využívají GPS satelity k určení polohy z velmi slabých signálů na Zemi nebo starší standardy Wi-Fi.",
     'modm_fhss_desc': "<strong>FHSS (Frekvenční přeskokování):</strong> Další formát rozprostřeného spektra, koncepčně navržený herečkou Hedy Lamarrovou za 2. světové války pro bezpečné řízení torpéd. Vysílač s přijímačem rychlostí blesku synchronně střídají nosnou frekvenci podle předem dohodnutého šifrovacího klíče (kódu přeskoků). Pokud nepřítel nebo cizí přístroj ruší jednu frekvenci, poškodí se jen nepatrný zlomek sekundy, než FHSS vysílačka znovu uskočí jinam. Využívá to dnes klasické Bluetooth, které přeskakuje frekvence klidně i 1600x za vteřinu.",
-    'modm_thss_desc': "<strong>THSS (Časově-přeskokové spektrum):</strong> Spočívá ve vysílání silných, avšak mimořádně kratičkých impulsů (záblesků) energie v přesně vypočítaných časových intervalech ('slotech'). Systém je z většiny času plně potichu a čeká. Výhodou je, že ohromné množství takových zařízení může sdílet absolutně stejné vysílací frekvenční pásmo najednou. Pravděpodobnost kolize jejich ultrarychlých krátkých pulzů v čase se totiž limitně blíží k nule. THSS je úzkým příbuzným formátů typických pro UWB (Ultra-Wideband). <br><br><strong>Upozornění:</strong> U THSS je vzorkování nastaveno na 200 kHz. Pokud nastavíte nosnou frekvenci fc příliš vysoko (nad 100 kHz), dojde k tzv. aliasingu a graf 5 bude vypadat jako rovná čára. Pro tento modul doporučujeme držet fc pod 100 kHz."
+    'modm_thss_desc': "<strong>THSS (Časově-přeskokové spektrum):</strong> Spočívá ve vysílání silných, avšak mimořádně kratičkých impulsů (záblesků) energie v přesně vypočítaných časových intervalech ('slotech'). Systém je z většiny času plně potichu a čeká. Výhodou je, že ohromné množství takových zařízení může sdílet absolutně stejné vysílací frekvenční pásmo najednou. Pravděpodobnost kolize jejich ultrarychlých krátkých pulzů v čase se totiž limitně blíží k nule. THSS je úzkým příbuzným formátů typických pro UWB (Ultra-Wideband). <br><br><strong>Upozornění:</strong> U THSS je vzorkování nastaveno na 200 kHz. Pokud nastavíte nosnou frekvenci fc příliš vysoko (nad 100 kHz), dojdou k tzv. aliasingu a graf 5 bude vypadat jako rovná čára. Pro tento modul doporučujeme držet fc pod 100 kHz.",
+    // Modal Průvodce
+    'modal_welcome_title': "Vítejte v Modulation Lab 3.0",
+    'modal_welcome_intro': "Tato aplikace slouží k interaktivnímu pochopení principů fungování digitálních rádiových modulací pro studenty.",
+    'modal_section_1_title': "Levé menu (Parametry Modulace)",
+    'modal_section_1_body': "Nahoře můžete vybrat libovolný <strong>modulační formát</strong> (QAM, PSK, LoRa...). Pod ním naleznete všechny fyzikální parametry vysílače. <strong>Zkuste najet myší na tyrkysové symboly <span class=\"info-icon\" style=\"position:static; margin:0 2px; vertical-align: middle;\">?</span> vedle názvů</strong>, kde ihned zjistíte, co se stane, když parametr posuvníkem změníte!",
+    'modal_section_2_title': "Pravá sekce (Grafické panely)",
+    'modal_section_2_body': "Aplikace okamžitě krokově simuluje signál tak, jak putuje obvody k anténě: od počítačových nul a jedniček (Graf 1), přes jejich mapování (Graf 2), zpracování frekvenčními filtry do základního pásma (Graf 3), až po výslednou oscilující nosnou rádiovou vlnu putující z antény 299 792 km/s vesmírem (Graf 5).",
+    'modal_section_2_footer': "U každého z grafů můžete kliknout na ikonu <strong>⛶ pro zvětšení (fullscreen)</strong> zobrazení.",
+    'modal_section_3_title': "Prezentace a Výuka",
+    'modal_section_3_body': "Pro promítání třídě je vlevo k dispozici <strong>PRESENTATION MODE</strong>. Aplikace ztlumí prvky na pozadí a nabere vysokokontrastní neonou paletu, která je na projektorech perfektní pro ukázku i ze vzdálenějších lavic.",
+    'modal_close_btn': "Zavřít a začít experimentovat"
 };
