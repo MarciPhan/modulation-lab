@@ -1,4 +1,5 @@
-import Plotly from 'plotly.js-dist-min';
+// Plotly is loaded as a global script in index.html
+const Plotly = window.Plotly;
 
 let activeFocusId = null;
 let originalParent = null;
