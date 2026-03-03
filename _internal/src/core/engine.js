@@ -20,7 +20,7 @@ export class ModulationEngine {
         this.SF = 8; // CSS Spreading Factor
         this.BW = 125000; // CSS/FHSS Bandwidth
         this.Rh = 1000; // FHSS Hop rate
-        this.N_th = 8; // THSS Slots
+        this.SLOTS = 8; // THSS Slots
 
         // Persistent data state
         this.cachedBits = null;
