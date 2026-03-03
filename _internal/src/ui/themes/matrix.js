@@ -21,7 +21,9 @@ export default {
         '--info': '#00ff41',
         '--info-bg': 'rgba(0, 255, 65, 0.05)',
         '--plot-grid': 'rgba(0, 255, 65, 0.1)',
-        '--terminal-green': '#00ff41'
+        '--terminal-green': '#00ff41',
+        '--bg-panel-title': '#0d0d0d',
+        '--text-panel-title': '#00ff41'
     },
     plotTheme: {
         textColor: '#00ff41',
@@ -34,5 +36,18 @@ export default {
         trace2: '#00ff41',
         trace3: '#003b00',
         trace4: '#00ff41'
+    },
+    presColors: {
+        trace1: '#00ff41',
+        trace2: '#00ff41',
+        trace3: '#00ff41',
+        trace4: '#00ff41'
+    },
+    presCssVars: {
+        '--bg-main': '#000000',
+        '--text-primary': '#00ff41',
+        '--border-main': '#00ff41',
+        '--bg-panel-title': '#000000',
+        '--text-panel-title': '#00ff41'
     }
 };

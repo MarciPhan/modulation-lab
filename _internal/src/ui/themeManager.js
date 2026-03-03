@@ -31,9 +31,19 @@ class ThemeManager {
 
     applyTheme(theme) {
         const root = document.documentElement;
+        const isPres = document.body.classList.contains('presentation');
+
+        // Apply base vars
         Object.entries(theme.cssVars).forEach(([key, val]) => {
             root.style.setProperty(key, val);
         });
+
+        // Apply presentation overrides if active
+        if (isPres && theme.presCssVars) {
+            Object.entries(theme.presCssVars).forEach(([key, val]) => {
+                root.style.setProperty(key, val);
+            });
+        }
 
         // Toggle classes for specialized logic (e.g. scanlines)
         document.body.classList.toggle('light-theme', theme.id === 'light');

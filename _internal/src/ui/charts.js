@@ -20,21 +20,10 @@ export function getPlotTheme(theme, isPres) {
 }
 
 export function getPlotColors(theme, isPres) {
-    const colors = { ...theme.plotColors };
-    if (isPres) {
-        if (theme.id === 'light') {
-            colors.trace1 = '#0000cc';
-            colors.trace2 = '#cc00cc';
-            colors.trace3 = '#008800';
-            colors.trace4 = '#cc5500';
-        } else {
-            colors.trace1 = '#00ffff';
-            colors.trace2 = '#ff00ff';
-            colors.trace3 = '#00ff00';
-            colors.trace4 = '#ff9900';
-        }
+    if (isPres && theme.presColors) {
+        return { ...theme.presColors };
     }
-    return colors;
+    return { ...theme.plotColors };
 }
 
 export function renderPlot(id, plotData, layout, config) {

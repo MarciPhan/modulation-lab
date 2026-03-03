@@ -457,39 +457,18 @@ html.no-scroll {
     cursor: pointer;
 }
 
-body.presentation {
-    /* Extreme Contrast Presentation Theme */
-    --bg-main: #000000;
-    --bg-panel: #0a0a0a;
-    --text-primary: #ffffff;
-    --border-main: #555555;
-    --primary: #ff9900;
-    --primary-hover: #ffbb33;
-    --info: #00ffff;
-    --danger: #ff0055;
-    --plot-grid: rgba(255, 255, 255, 0.15);
-}
+/* body.presentation variables are now handled by ThemeManager (sets --variables on :root) */
 
-body.light-theme.presentation {
-    /* Extreme Light Contrast Presentation Theme */
-    --bg-main: #ffffff;
-    --bg-panel: #fcfcfc;
-    --text-primary: #000000;
-    --border-main: #e0e0e0;
-    --primary: #cc5500;
-    --primary-hover: #ea7603;
-    --info: #0000ff;
-    --danger: #ff0000;
-    --plot-grid: rgba(0, 0, 0, 0.2);
-    --shadow-main: none;
-    --shadow-inset: none;
-}
-
-body.light-theme.presentation .panel-title {
-    background: #f0f0f0;
-    color: #000000;
-    font-weight: bold;
-    border-bottom: 2px solid #000000;
+/* Panel Title Styling - Controlled by Themes */
+.panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-panel-title, var(--bg-panel));
+    color: var(--text-panel-title, var(--text-primary));
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-main);
 }
 
 /* Tooltip & Edu-Icons */

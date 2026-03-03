@@ -1,5 +1,6 @@
 import { UI_PARAMS } from '../modulations/index.js';
 import { getTranslation, setLanguage, getCurrentLanguage } from '../i18n/index.js';
+import { themeManager } from './themeManager.js';
 
 export function setupSyncInputs(elements, requestUpdate) {
     function sync(range, num, isLogM = false) {
@@ -33,6 +34,9 @@ export function setupMainEvents(elements, engine, requestUpdate, updateInterface
     elements.presBtn.addEventListener('click', () => {
         document.body.classList.toggle('presentation');
         elements.presBtn.classList.toggle('active');
+
+        // Re-apply theme to pick up presentation overrides
+        themeManager.applyTheme(themeManager.getCurrentTheme());
 
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));

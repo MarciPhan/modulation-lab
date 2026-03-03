@@ -70,12 +70,12 @@ function runSimulation(forceRegen = false) {
     const modDef = engine.getModulationDef(type);
     if (!modDef) return;
 
-    const isLight = document.body.classList.contains('light-theme');
+    const themeObj = themeManager.getCurrentTheme();
+    const isLight = themeObj.id === 'light';
     const isPres = document.body.classList.contains('presentation');
 
-    const theme = getPlotTheme(isLight, isPres);
-    const colors = getPlotColors(isLight, isPres);
-    const { trace1, trace2, trace3, trace4 } = colors;
+    const theme = getPlotTheme(themeObj, isPres);
+    const { trace1, trace2, trace3, trace4 } = getPlotColors(themeObj, isPres);
 
     updateGUIByModule(modDef);
 
@@ -97,11 +97,7 @@ function runSimulation(forceRegen = false) {
     const data = engine.simulate(type, forceRegen);
     if (!data) return;
 
-    const themeObj = themeManager.getCurrentTheme();
-    const isLight = themeObj.id === 'light';
-    const isPres = document.body.classList.contains('presentation');
-    const theme = getPlotTheme(themeObj, isPres);
-    const { trace1, trace2, trace3, trace4 } = getPlotColors(themeObj, isPres);
+
 
     const sliceView = 3000;
     const lineWidth = isPres ? 3 : 2;
