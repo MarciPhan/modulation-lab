@@ -131,8 +131,13 @@ function runSimulation(forceRegen = false) {
     const lineWidth = isPres ? 3 : 2;
 
     // Plot 1: Source
+    const len1 = data.bits.length;
+    const xArr1 = new Float32Array(len1);
+    const yArr1 = new Float32Array(len1);
+    for (let i = 0; i < len1; i++) { xArr1[i] = i; yArr1[i] = data.bits[i]; }
+
     renderPlot('plot-1', [{
-        x: Array.from({ length: data.bits.length }, (_, i) => i), y: data.bits,
+        x: xArr1, y: yArr1,
         mode: 'lines', line: { shape: 'hv', color: trace1, width: lineWidth },
         fill: 'tozeroy', fillcolor: isLight ? 'rgba(0, 90, 158, 0.15)' : 'rgba(139, 233, 253, 0.08)'
     }], { ...theme, yaxis: { range: [-0.2, 1.2], dtick: 1, gridcolor: theme.xaxis.gridcolor, zerolinecolor: theme.xaxis.zerolinecolor } }, { displayModeBar: false });
@@ -142,24 +147,40 @@ function runSimulation(forceRegen = false) {
     let p2Layout = { ...theme };
     if (modDef.showConstellation) {
         p2Layout = { ...theme, xaxis: { range: [-2, 2], dtick: 0.5, linewidth: 2, linecolor: theme.xaxis.linecolor }, yaxis: { range: [-2, 2], dtick: 0.5, linewidth: 2, linecolor: theme.yaxis.linecolor } };
-        p2Data = (data.symbols[0] && data.symbols[0].I !== undefined) ?
-            [{ x: data.symbols.map(s => s.I), y: data.symbols.map(s => s.Q), mode: 'markers', type: 'scatter', marker: { color: trace4, size: isPres ? 14 : 10, line: { color: isLight ? '#fff' : '#000', width: 1 } } }] :
-            [{ x: data.bbI.slice(0, 1000), y: data.bbQ.slice(0, 1000), mode: 'lines', line: { color: trace4, width: lineWidth } }];
+
+        if (data.symbols[0] && data.symbols[0].I !== undefined) {
+            const symLen = data.symbols.length;
+            const xSym = new Float32Array(symLen);
+            const ySym = new Float32Array(symLen);
+            for (let i = 0; i < symLen; i++) { xSym[i] = data.symbols[i].I; ySym[i] = data.symbols[i].Q; }
+            p2Data = [{ x: xSym, y: ySym, mode: 'markers', type: 'scatter', marker: { color: trace4, size: isPres ? 14 : 10, line: { color: isLight ? '#fff' : '#000', width: 1 } } }];
+        } else {
+            p2Data = [{ x: data.bbI.subarray(0, 1000), y: data.bbQ.subarray(0, 1000), mode: 'lines', line: { color: trace4, width: lineWidth } }];
+        }
     } else if (data.plot2Type) {
-        const xArr = (data.extras && data.extras.plot2_x) ? data.extras.plot2_x : Array.from({ length: data.symbols.length }, (_, i) => i);
-        const yArr = (data.extras && data.extras.plot2_y) ? data.extras.plot2_y : data.symbols.map(s => s.val);
+        const symLen = data.symbols.length;
+        const xArr = (data.extras && data.extras.plot2_x) ? data.extras.plot2_x : new Float32Array(symLen).map((_, i) => i);
+        let yArr = data.extras && data.extras.plot2_y ? data.extras.plot2_y : null;
+        if (!yArr) {
+            yArr = new Float32Array(symLen);
+            for (let i = 0; i < symLen; i++) yArr[i] = data.symbols[i].val;
+        }
         p2Data = [{ x: xArr, y: yArr, mode: data.plot2Type, line: { width: lineWidth - 0.5, color: trace2 }, marker: { color: trace2, size: isPres ? 8 : 6 } }];
     } else {
-        const xArr = Array.from({ length: data.symbols.length }, (_, i) => i);
-        const yArr = data.symbols.map(s => s.val);
-        p2Data = [{ x: xArr, y: yArr, mode: 'markers', marker: { color: trace2, size: isPres ? 8 : 6 }, error_y: { type: 'data', array: yArr.map(s => 0), arrayminus: yArr, color: trace2, width: lineWidth - 1 } }];
+        const symLen = data.symbols.length;
+        const xArr = new Float32Array(symLen);
+        const yArr = new Float32Array(symLen);
+        const yErr = new Float32Array(symLen); // array of 0s
+        for (let i = 0; i < symLen; i++) { xArr[i] = i; yArr[i] = data.symbols[i].val; }
+
+        p2Data = [{ x: xArr, y: yArr, mode: 'markers', marker: { color: trace2, size: isPres ? 8 : 6 }, error_y: { type: 'data', array: yErr, arrayminus: yArr, color: trace2, width: lineWidth - 1 } }];
     }
     renderPlot('plot-2', p2Data, p2Layout, { displayModeBar: false });
 
     // Plot 3: Baseband
     renderPlot('plot-3', [
-        { x: data.t.slice(0, sliceView), y: data.bbI.slice(0, sliceView), name: 'I', line: { color: trace3, width: lineWidth } },
-        { x: data.t.slice(0, sliceView), y: data.bbQ.slice(0, sliceView), name: 'Q', line: { color: trace2, width: lineWidth } }
+        { x: data.t.subarray(0, sliceView), y: data.bbI.subarray(0, sliceView), name: 'I', line: { color: trace3, width: lineWidth } },
+        { x: data.t.subarray(0, sliceView), y: data.bbQ.subarray(0, sliceView), name: 'Q', line: { color: trace2, width: lineWidth } }
     ], { ...theme }, { displayModeBar: false });
 
     // Plot 4 Analysis
@@ -169,18 +190,21 @@ function runSimulation(forceRegen = false) {
         p4Data = [{ x: data.extras.detail_t, y: data.extras.detail_bb, line: { color: trace4, width: lineWidth } }];
     } else if (modDef.isVector || data.isVector) {
         if (data.extras && data.extras.envelope) {
-            p4Data = [{ x: data.t.slice(0, sliceView), y: data.extras.envelope.slice(0, sliceView), line: { color: trace4, width: lineWidth } }];
+            p4Data = [{ x: data.t.subarray(0, sliceView), y: data.extras.envelope.subarray(0, sliceView), line: { color: trace4, width: lineWidth } }];
         } else {
-            const phase = data.bbI.slice(0, sliceView).map((v, i) => Math.atan2(data.bbQ[i], v));
-            p4Data = [{ x: data.t.slice(0, sliceView), y: phase, line: { color: trace4, width: lineWidth - 0.5 } }];
+            const phase = new Float32Array(sliceView);
+            for (let i = 0; i < sliceView; i++) phase[i] = Math.atan2(data.bbQ[i], data.bbI[i]);
+            p4Data = [{ x: data.t.subarray(0, sliceView), y: phase, line: { color: trace4, width: lineWidth - 0.5 } }];
         }
     } else {
-        p4Data = [{ x: data.t.slice(0, sliceView), y: data.fInst.slice(0, sliceView).map(f => f / 1000), line: { color: trace4, width: lineWidth } }];
+        const freq = new Float32Array(sliceView);
+        for (let i = 0; i < sliceView; i++) freq[i] = data.fInst[i] / 1000;
+        p4Data = [{ x: data.t.subarray(0, sliceView), y: freq, line: { color: trace4, width: lineWidth } }];
     }
     renderPlot('plot-4', p4Data, { ...theme }, { displayModeBar: false });
 
     // Plot 5: RF
-    renderPlot('plot-5', [{ x: data.t.slice(0, 5000), y: data.pb.slice(0, 5000), line: { color: trace1, width: lineWidth - 0.5 } }], { ...theme }, { displayModeBar: false });
+    renderPlot('plot-5', [{ x: data.t.subarray(0, 5000), y: data.pb.subarray(0, 5000), line: { color: trace1, width: lineWidth - 0.5 } }], { ...theme }, { displayModeBar: false });
 }
 
 // Inicializace

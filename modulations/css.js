@@ -19,12 +19,17 @@ export default {
         const Ns = Math.round(Ts_css * Fs_css); // vzorků na symbol
 
         const Nc_c = Math.floor(bits.length / SF_eff);
-        const symbols = [];
+        const symbols = new Array(Nc_c);
+        const m_indices = new Float32Array(Nc_c);
+
         for (let i = 0; i < Nc_c; i++) {
-            const chunk = bits.slice(i * SF_eff, (i + 1) * SF_eff);
-            const bin_int = chunk.reduce((A, B, j) => A + (B << (SF_eff - 1 - j)), 0);
+            let bin_int = 0;
+            for (let j = 0; j < SF_eff; j++) {
+                bin_int += bits[i * SF_eff + j] << (SF_eff - 1 - j);
+            }
             const gray = bin_int ^ (bin_int >> 1);
-            symbols.push({ shift: gray, val: gray });
+            symbols[i] = { shift: gray, val: gray };
+            m_indices[i] = gray;
         }
 
         const Ntotal = Nc_c * Ns;
@@ -48,6 +53,8 @@ export default {
             base_im[s] = Math.sin(phase);
         }
 
+        const w_fc = 2 * Math.PI * engine.fc;
+
         // Mapování symbolu m na cirkulární posun: n_shift = m * Ns / M
         for (let i = 0; i < Nc_c; i++) {
             const m = symbols[i].shift % M_css;
@@ -55,11 +62,12 @@ export default {
             for (let s = 0; s < Ns; s++) {
                 const idx = i * Ns + s;
                 const src = (s + Ns - n_shift) % Ns; // circular roll
-                t[idx] = idx / Fs_css;
+                const timeStr = idx / Fs_css;
+                t[idx] = timeStr;
                 bbI[idx] = base_re[src];
                 bbQ[idx] = base_im[src];
-                pb[idx] = bbI[idx] * Math.cos(2 * Math.PI * engine.fc * t[idx])
-                    - bbQ[idx] * Math.sin(2 * Math.PI * engine.fc * t[idx]);
+                const carrierPhase = w_fc * timeStr;
+                pb[idx] = bbI[idx] * Math.cos(carrierPhase) - bbQ[idx] * Math.sin(carrierPhase);
             }
         }
 
@@ -68,18 +76,21 @@ export default {
         const fInst = new Float32Array(Ntotal);
         let prevAngle = Math.atan2(bbQ[0], bbI[0]);
         fInst[0] = 0;
+        const normF_css = Fs_css / (2 * Math.PI);
+        const pi2 = 2 * Math.PI;
+
         for (let i = 1; i < Ntotal; i++) {
             let angle = Math.atan2(bbQ[i], bbI[i]);
             let dph = angle - prevAngle;
-            while (dph > Math.PI) dph -= 2 * Math.PI;
-            while (dph < -Math.PI) dph += 2 * Math.PI;
-            fInst[i] = (dph * Fs_css) / (2 * Math.PI);
+            if (dph > Math.PI) dph -= pi2;
+            else if (dph < -Math.PI) dph += pi2;
+            fInst[i] = dph * normF_css;
             prevAngle = angle;
         }
 
         return {
             t, bbI, bbQ, pb, fInst, bits, symbols,
-            extras: { m_indices: symbols.map(s => s.shift) },
+            extras: { m_indices },
             plot2Type: 'markers'
         };
     }

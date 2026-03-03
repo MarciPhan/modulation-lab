@@ -1,4 +1,19 @@
-import { utils } from './utils.js';
+// LFSR Generator
+function lfsr(n, taps, length, returnState = false) {
+    let state = 0x1;
+    const seq = [];
+    const mask = (1 << n) - 1;
+    for (let i = 0; i < length; i++) {
+        let bit = 0;
+        for (let j = 0; j < taps.length; j++) {
+            bit ^= (state >> (taps[j] - 1)) & 1;
+        }
+        seq.push(returnState ? state : (state & 1));
+        state = ((state << 1) | bit) & mask;
+        if (state === 0) state = 1;
+    }
+    return seq;
+}
 
 export default {
     id: 'thss',
@@ -16,9 +31,9 @@ export default {
         const N_frames = Nc_th * Np;
 
         // LFSR PN sekvence pro TH kód
-        const pn = utils.lfsr(7, [7, 1], N_frames, true);
+        const pn = lfsr(7, [7, 1], N_frames, true);
         // Kumulativní mod pro slot indexy (jako v referenci: cumsum(pn) % N_th)
-        const th_code = new Array(N_frames);
+        const th_code = new Int32Array(N_frames);
         let cumsum = 0;
         for (let i = 0; i < N_frames; i++) {
             cumsum += pn[i] & 1;
@@ -74,28 +89,39 @@ export default {
             }
         }
 
+        const w_fc = 2 * Math.PI * engine.fc;
+
         // Pásmový signál
         for (let i = 0; i < Ntotal; i++) {
-            pb[i] = bbI[i] * Math.cos(2 * Math.PI * engine.fc * t[i]);
+            pb[i] = bbI[i] * Math.cos(w_fc * t[i]);
         }
 
         // Data pro graf 2: TH kód (prvních 40 rámců)
         const nh_show = Math.min(40, N_frames);
-        const plot2_x = Array.from({ length: nh_show }, (_, i) => i);
-        const plot2_y = th_code.slice(0, nh_show);
+        const plot2_x = new Float32Array(nh_show);
+        const plot2_y = new Float32Array(nh_show);
+        for (let i = 0; i < nh_show; i++) {
+            plot2_x[i] = i;
+            plot2_y[i] = th_code[i];
+        }
 
         // Data pro graf 4: detail 1 bitu
-        const detail_start = 0;
-        const detail_end = Math.min(Ns_bit, Ntotal);
-        const detail_t = Array.from(t.slice(detail_start, detail_end));
-        const detail_bb = Array.from(bbI.slice(detail_start, detail_end));
-        // Posunout čas na začátek bitu
-        const t0 = detail_t[0] || 0;
-        for (let i = 0; i < detail_t.length; i++) detail_t[i] -= t0;
+        const detail_len = Math.min(Ns_bit, Ntotal);
+        const detail_t = new Float32Array(detail_len);
+        const detail_bb = new Float32Array(detail_len);
+
+        const t0 = t[0] || 0;
+        for (let i = 0; i < detail_len; i++) {
+            detail_t[i] = t[i] - t0;
+            detail_bb[i] = bbI[i];
+        }
+
+        const symbols = new Array(Nc_th);
+        for (let i = 0; i < Nc_th; i++) symbols[i] = { val: bits[i] };
 
         return {
             t, bbI, bbQ, pb, fInst, bits,
-            symbols: bits.map(b => ({ val: b })),
+            symbols,
             extras: {
                 plot2_x, plot2_y,
                 detail_t, detail_bb

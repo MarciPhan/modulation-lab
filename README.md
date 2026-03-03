@@ -5,7 +5,7 @@
 [![JS](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-Pico_W_/_Web-brightgreen.svg)]()
 
-Interaktivní virtuální laboratoř pro simulaci a analýzu digitálních rádiových modulací. Tato platforma slouží jako demonstrační a experimentální nástroj pro pochopení principů číslicového zpracování signálů (DSP) v rámci akademických kurzů zaměřených na komunikační systémy.
+Interaktivní virtuální laboratoř pro simulaci a analýzu digitálních rádiových modulací. Tato platforma je navržena jako extrémně výkonný, modulární a snadno rozšiřitelný nástroj (Zero-Dependency & Zero-Copy) pro demonstraci principů číslicového zpracování signálů (DSP) v rámci akademických kurzů.
 
 ---
 
@@ -63,17 +63,18 @@ Projekt využívá striktní oddělení uživatelského rozhraní, lokalizační
 ### Struktura adresářů
 ```text
 modulation-lab/
-├── index.html                # Hlavní vstupní bod
-├── main.js                   # Hlavní orchestrátor aplikace
-├── core/                     # DSP jádro (výpočetní logika)
+├── index.html                # Hlavní vstupní bod + registrace loga
+├── main.js                   # High-performance orchestrátor (Zero-copy rendering)
+├── core/                     # Zapouzdření enginu
 │   └── engine.js
-├── ui/                       # UI komponenty & správa
-│   ├── themes/               # Modulární barevná schémata (založeno na JS)
+├── ui/                       # UI komponenty & Branding
+│   ├── science_logo.png      # Nové profesionální science logo
+│   ├── themes/               # Modulární barevná schémata
 │   ├── styles/               # Globální CSS (struktura)
 │   └── charts.js             # Wrappery pro grafy Plotly
-├── modulations/              # Pluginy modulačních schémat
+├── modulations/              # Standalone modulační moduly (100% self-contained)
 ├── i18n/                     # Lokalizační slovníky
-├── plotly-basic.min.js       # Přibalená knihovna pro vykreslování grafů
+├── plotly-basic.min.js       # Vykreslovací jádro Plotly
 ├── deploy.sh                 # Nasazovací skript pro Pico W
 ├── start.sh / .bat           # Spouštěcí skripty (lokální server)
 └── README.md                 # Dokumentace
@@ -126,10 +127,11 @@ Pro nasazení:
 
 ## Technické specifikace
 
-Simulační jádro provádí transformace signálu v reálném čase pomocí třídy `ModulationEngine`.
-- **Filtrování**: Implementace RRC filtru (Root Raised Cosine) iterovaná v reálném čase.
-- **Analýza**: Odvození rozvinuté fáze ("unwrapped phase") pro analýzu okamžité frekvence.
-- **Témata**: Dynamické skinování založené na CSS proměnných.
+Simulační jádro provádí transformace signálu v reálném čase s využitím moderních metod pro maximální plynulost v prohlížeči:
+- **Zero-Dependency Moduly**: Každá modulace (ASK, QAM, LoRa...) je 100% samostatná. Neexistují žádné sdílené utility, což umožňuje přidat novou modulaci prostým zkopírováním a úpravou jednoho souboru.
+- **Vysoký výkon (TypedArrays)**: Veškerá matematika signálu probíhá v nízkoúrovňových polích `Float32Array` a `Int8Array`. Vynechání standardních JS metod (např. `.map`, `.reduce`) minimalizuje Garbage Collection a zátěž CPU.
+- **Zero-Copy Rendering**: Data z výpočetního jádra se do grafů Plotly předávají pomocí metody `.subarray()`, což eliminovalo drahé kopírování celých polí v paměti.
+- **RRC Filtrování**: Optimalizované konvoluční jádro s ořezanými kraji pro okamžité překreslování i při vysokých SPS.
 
 ---
 
