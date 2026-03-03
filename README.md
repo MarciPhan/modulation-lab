@@ -5,25 +5,25 @@
 [![JS](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-Pico_W_/_Web-brightgreen.svg)]()
 
-Interactive virtual laboratory for simulating and analyzing digital radio modulations. This platform serves as a demonstration and experimental tool for understanding the principles of Digital Signal Processing (DSP) within academic communication systems courses.
+Interaktivní virtuální laboratoř pro simulaci a analýzu digitálních rádiových modulací. Tato platforma slouží jako demonstrační a experimentální nástroj pro pochopení principů číslicového zpracování signálů (DSP) v rámci akademických kurzů zaměřených na komunikační systémy.
 
 ---
 
-## Table of Contents
-- [Installation and Run](#installation-and-run)
-- [Project Architecture](#project-architecture)
-- [Extensibility](#extensibility)
-  - [Adding New Modulations](#adding-new-modulations)
-  - [Adding New Themes](#adding-new-themes)
-  - [Internationalization (i18n)](#internationalization-i18n)
-- [Technical Specifications](#technical-specifications)
-- [Presentation Mode](#presentation-mode)
-- [Deployment to Pico W](#deployment-to-pico-w)
-- [License](#license)
+## Obsah
+- [Instalace a spuštění](#instalace-a-spuštění)
+- [Architektura projektu](#architektura-projektu)
+- [Rozšiřitelnost](#rozšiřitelnost)
+  - [Přidávání nových modulací](#přidávání-nových-modulací)
+  - [Přidávání nových témat](#přidávání-nových-témat)
+  - [Lokalizace (i18n)](#lokalizace-i18n)
+- [Technické specifikace](#technické-specifikace)
+- [Prezentační režim](#prezentační-režim)
+- [Nasazení na Pico W](#nasazení-na-pico-w)
+- [Licence](#licence)
 
 ---
 
-## Installation and Run
+## Instalace a spuštění
 
 Tato aplikace běží přímo v prohlížeči. Pro její správné fungování ale musíte kód nejprve stáhnout a spustit lokální server (díky využití moderních ES modulů to nelze jen prostým dvojklikem na soubor).
 
@@ -56,51 +56,51 @@ Skript vám vypíše do konzole odkaz (typicky `http://localhost:8080`), který 
 
 ---
 
-## Project Architecture
+## Architektura projektu
 
-The project employs strict separation of the user interface, localization data, and the computational core.
+Projekt využívá striktní oddělení uživatelského rozhraní, lokalizačních dat a výpočetního jádra.
 
-### Directory Structure
+### Struktura adresářů
 ```text
 modulation-lab/
-├── index.html                # Main entry point
-├── main.js                   # Main application orchestrator
-├── core/                     # DSP Core (computational logic)
+├── index.html                # Hlavní vstupní bod
+├── main.js                   # Hlavní orchestrátor aplikace
+├── core/                     # DSP jádro (výpočetní logika)
 │   └── engine.js
-├── ui/                       # UI components & management
-│   ├── themes/               # Modular color schemes (JS based)
-│   ├── styles/               # Global CSS (structural)
-│   └── charts.js             # Plotly wrappers
-├── modulations/              # Modulation scheme plugins
-├── i18n/                     # Localization dictionaries
-├── plotly-basic.min.js       # Required plotting library (local)
-├── deploy.sh                 # Deployment script for Pico W
-├── start.sh / .bat           # Launch scripts (local Python server)
-└── README.md                 # Documentation
+├── ui/                       # UI komponenty & správa
+│   ├── themes/               # Modulární barevná schémata (založeno na JS)
+│   ├── styles/               # Globální CSS (struktura)
+│   └── charts.js             # Wrappery pro grafy Plotly
+├── modulations/              # Pluginy modulačních schémat
+├── i18n/                     # Lokalizační slovníky
+├── plotly-basic.min.js       # Přibalená knihovna pro vykreslování grafů
+├── deploy.sh                 # Nasazovací skript pro Pico W
+├── start.sh / .bat           # Spouštěcí skripty (lokální server)
+└── README.md                 # Dokumentace
 ```
 
 ---
 
-## Extensibility
+## Rozšiřitelnost
 
-### Adding New Modulations
-The architecture allows for the seamless addition of new modulation schemes:
+### Přidávání nových modulací
+Architektura umožňuje plynulé přidávání nových modulačních schémat:
 
-1. Create a new module inside `modulations/bpsk.js`:
+1. Vytvořte nový modul uvnitř `modulations/bpsk.js`:
 ```javascript
 export default {
     id: 'bpsk',
     name: 'Binary PSK',
     params: ['M', 'FC', 'RB', 'ALPHA'],
-    // ... logic ...
+    // ... logika ...
 };
 ```
-2. Register the module in `modulations/index.js`.
+2. Zaregistrujte modul v `modulations/index.js`.
 
-### Adding New Themes
-Themes are fully modular. To add a new visual style:
+### Přidávání nových témat
+Témata jsou plně modulární. Chcete-li přidat nový vizuální styl:
 
-1. Create a file in `ui/themes/neon.js`:
+1. Vytvořte soubor v `ui/themes/neon.js`:
 ```javascript
 export default {
     id: 'neon',
@@ -110,38 +110,38 @@ export default {
     presCssVars: { ... }
 };
 ```
-2. Register it in `ui/themes/index.js`. The theme button will automatically cycle through it.
+2. Zaregistrujte jej v `ui/themes/index.js`. Tlačítko tématu jej začne automaticky cyklicky přepínat.
 
 ---
 
-## Deployment to Pico W
+## Nasazení na Pico W
 
-This version is optimized for the **[Modulation Pico Server](https://github.com/MarciPhan/modulation-pico-server)**.
+Tato verze je optimalizována pro **[Modulation Pico Server](https://github.com/MarciPhan/modulation-pico-server)**.
 
-To deploy:
-1. Run `./deploy.sh`. This copies all necessary files to the `../modulation-pico-server/www/` directory.
-2. Upload the `www/` content to your Raspberry Pi Pico W.
-
----
-
-## Technical Specifications
-
-The simulation core performs real-time signal transformations using the `ModulationEngine` class.
-- **Filtering**: Real-time Root Raised Cosine (RRC) implementation.
-- **Analysis**: Unwrapped phase derivation for instant frequency analysis.
-- **Themes**: CSS Variable based dynamic skinning.
+Pro nasazení:
+1. Spusťte `./deploy.sh`. Tento skript zkopíruje všechny potřebné soubory do adresáře `../modulation-pico-server/www/`.
+2. Nahrajte obsah složky `www/` do vašeho Raspberry Pi Pico W.
 
 ---
 
-## Contributing and Development
+## Technické specifikace
 
-Developed by Jakub Marcinka for the Faculty of Mechatronics, Informatics and Interdisciplinary Studies (**FM TUL**).
+Simulační jádro provádí transformace signálu v reálném čase pomocí třídy `ModulationEngine`.
+- **Filtrování**: Implementace RRC filtru (Root Raised Cosine) iterovaná v reálném čase.
+- **Analýza**: Odvození rozvinuté fáze ("unwrapped phase") pro analýzu okamžité frekvence.
+- **Témata**: Dynamické skinování založené na CSS proměnných.
+
+---
+
+## Vývoj a přispívání
+
+Vyvinul Jakub Marcinka pro Fakultu mechatroniky, informatiky a mezioborových studií (**FM TUL**).
 
 ---
 
-## License
+## Licence
 
-Distributed under the **ISC** License.
+Distribuováno pod licencí **ISC**.
 
 ---
-© 2026 Jakub Marcinka | Digital Modulation Lab Project
+© 2026 Jakub Marcinka | Projekt Digitální modulační laboratoř
