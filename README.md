@@ -1,14 +1,11 @@
-# Digital Modulation Lab v3.0 (Raw JS Edition)
+# Digital Modulation Lab
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![Version](https://img.shields.io/badge/version-3.0.0-orange.svg)]()
 [![Node.js](https://img.shields.io/badge/Node.js-Not_Required-red.svg)]()
 [![JS](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)]()
 [![Platform](https://img.shields.io/badge/Platform-Pico_W_/_Web-brightgreen.svg)]()
 
-Interactive virtual laboratory for simulating and analyzing digital radio modulations. This platform serves as a demonstration and experimental tool for understanding the principles of Digital Signal Processing (DSP) within academic communication systems courses. 
-
-**This version is built as "Raw JS" (native ES modules), meaning it runs directly in the browser without any build process, Node.js, or complex dependencies.**
+Interactive virtual laboratory for simulating and analyzing digital radio modulations. This platform serves as a demonstration and experimental tool for understanding the principles of Digital Signal Processing (DSP) within academic communication systems courses.
 
 ---
 
@@ -45,7 +42,7 @@ The application will be accessible at `http://localhost:8080`. Alternatively, yo
 
 ## Project Architecture
 
-The project employs strict separation of the user interface, localization data, and the computational core. Since the transition to **Raw JS**, the source code is identical to the production code.
+The project employs strict separation of the user interface, localization data, and the computational core.
 
 ### Directory Structure
 ```text
@@ -85,7 +82,7 @@ export default {
 2. Register the module in `modulations/index.js`.
 
 ### Adding New Themes
-Themes are now fully modular. To add a new visual style:
+Themes are fully modular. To add a new visual style:
 
 1. Create a file in `ui/themes/neon.js`:
 ```javascript
@@ -94,7 +91,7 @@ export default {
     name: 'Neon Night',
     cssVars: { '--primary': '#00ff00', ... },
     plotTheme: { ... },
-    presCssVars: { ... } // High contrast for Presentation Mode
+    presCssVars: { ... }
 };
 ```
 2. Register it in `ui/themes/index.js`. The theme button will automatically cycle through it.
@@ -113,7 +110,7 @@ To deploy:
 
 ## Technical Specifications
 
-The simulation core performs real-time signal transformations using the `ModulationEngine` class. 
+The simulation core performs real-time signal transformations using the `ModulationEngine` class.
 - **Filtering**: Real-time Root Raised Cosine (RRC) implementation.
 - **Analysis**: Unwrapped phase derivation for instant frequency analysis.
 - **Themes**: CSS Variable based dynamic skinning.
@@ -122,7 +119,7 @@ The simulation core performs real-time signal transformations using the `Modulat
 
 ## Contributing and Development
 
-Developed by Jakub Marcinka for the Faculty of Mechatronics, Informatics and Interdisciplinary Studies (**FM TUL**). 
+Developed by Jakub Marcinka for the Faculty of Mechatronics, Informatics and Interdisciplinary Studies (**FM TUL**).
 
 ---
 

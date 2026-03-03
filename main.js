@@ -8,7 +8,7 @@ import { setupFullscreen, initTooltips } from './ui/utils.js';
 import { setupSyncInputs, setupMainEvents } from './ui/events.js';
 
 /**
- * Modulation Lab 3.0 - Modular Presentation Engine (SRC Edition)
+ * Digital Modulation Lab - Modular Presentation Engine
  */
 
 const engine = new ModulationEngine();

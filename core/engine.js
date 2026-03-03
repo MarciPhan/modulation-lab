@@ -1,7 +1,7 @@
 import { MODULATIONS } from '../modulations/index.js';
 
 /**
- * DSP library for Live Modulation Lab v3.0 (Modular Edition)
+ * DSP library for Digital Modulation Lab
  * Jádro starající se pouze o správu stavu, držení dat a spouštění aktivního modulu.
  */
 

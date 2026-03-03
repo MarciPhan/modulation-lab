@@ -1,9 +1,9 @@
 @echo off
 :: 🚀 Live Modulation Lab - Startup Script for Windows
 
-:: No dependencies check needed for Raw JS.
+:: Serve the current directory using Python.
 set PORT=8080
-echo Starting Digital Modulation Lab (Raw JS) on http://localhost:%PORT% ...
+echo Starting Digital Modulation Lab on http://localhost:%PORT% ...
 
 where python >nul 2>nul
 if %ERRORLEVEL% EQU 0 (

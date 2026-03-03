@@ -1,8 +1,7 @@
 #!/bin/bash
 # 🚀 Live Modulation Lab - Startup Script
 
-# No dependencies check needed for Raw JS.
-# Just serve the current directory using Python or any simple web server.
+# Serve the current directory using Python.
 
 PORT=8080
 
@@ -12,7 +11,7 @@ if lsof -i :$PORT -sTCP:LISTEN -t >/dev/null ; then
     PORT=8081
 fi
 
-echo "Starting Digital Modulation Lab (Raw JS) on http://localhost:$PORT ..."
+echo "Starting Digital Modulation Lab on http://localhost:$PORT ..."
 
 if command -v python3 &>/dev/null; then
     python3 -m http.server $PORT
